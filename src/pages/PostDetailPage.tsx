@@ -248,6 +248,26 @@ const PostDetailPage: React.FC = () => {
                         </code>
                       );
                     },
+                    // img: ({ alt, ...props }) => (
+                    //   <figure style={{ textAlign: "center", margin: "2rem 0" }}>
+                    //     <img
+                    //       {...props}
+                    //       alt={alt}
+                    //       style={{ maxWidth: "100%", borderRadius: "8px" }}
+                    //     />
+                    //     {alt && (
+                    //       <figcaption
+                    //         style={{
+                    //           fontSize: "0.9rem",
+                    //           color: "#666",
+                    //           marginTop: "0.5rem",
+                    //         }}
+                    //       >
+                    //         &lt;&lt; {alt} &gt;&gt;
+                    //       </figcaption>
+                    //     )}
+                    //   </figure>
+                    // ),
                   }}
                 />
               </div>

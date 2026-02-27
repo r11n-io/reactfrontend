@@ -1,3 +1,4 @@
+import type { Editor, StringStream } from "codemirror";
 import type { Options } from "easymde";
 import "easymde/dist/easymde.min.css";
 import {
@@ -102,7 +103,7 @@ const PostWritePage: React.FC = () => {
       imageUploadFunction: async (
         file: File,
         onSuccess: (url: string) => void,
-        onError: (error: string) => void
+        onError: (error: string) => void,
       ) => {
         try {
           const imageUrl = await uploadImage(file);
@@ -114,6 +115,9 @@ const PostWritePage: React.FC = () => {
 
           handleError(err);
         }
+      },
+      codeMirror: {
+        flattenSpans: false,
       },
     };
   }, []);
@@ -146,7 +150,7 @@ const PostWritePage: React.FC = () => {
       }
 
       handleSuccess(`게시글 작성완료 [${savedPost.postId}]`, () =>
-        navigate("/posts")
+        navigate("/posts"),
       );
     } catch (err) {
       handleError(err);
@@ -280,6 +284,22 @@ const PostWritePage: React.FC = () => {
               onChange={handleContentChange}
               options={mdeOptions}
               className="markdown-editor-simplemde"
+              getMdeInstance={(instance) => {
+                const cm = instance?.codemirror as Editor | undefined;
+                if (!cm) return;
+                const internalCm = cm as Editor & { isOverlayAdded?: boolean };
+
+                if (internalCm.isOverlayAdded) return;
+
+                internalCm.addOverlay({
+                  token: (stream: StringStream): string | null => {
+                    if (stream.next() === " ") return "custom-space";
+                    return null;
+                  },
+                });
+
+                internalCm.isOverlayAdded = true;
+              }}
             />
           </div>
         </div>
