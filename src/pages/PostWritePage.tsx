@@ -1,4 +1,3 @@
-import type { Editor, StringStream } from "codemirror";
 import type { Options } from "easymde";
 import "easymde/dist/easymde.min.css";
 import {
@@ -284,22 +283,22 @@ const PostWritePage: React.FC = () => {
               onChange={handleContentChange}
               options={mdeOptions}
               className="markdown-editor-simplemde"
-              getMdeInstance={(instance) => {
-                const cm = instance?.codemirror as Editor | undefined;
-                if (!cm) return;
-                const internalCm = cm as Editor & { isOverlayAdded?: boolean };
+              // getMdeInstance={(instance) => {
+              //   const cm = instance?.codemirror as Editor | undefined;
+              //   if (!cm) return;
+              //   const internalCm = cm as Editor & { isOverlayAdded?: boolean };
 
-                if (internalCm.isOverlayAdded) return;
+              //   if (internalCm.isOverlayAdded) return;
 
-                internalCm.addOverlay({
-                  token: (stream: StringStream): string | null => {
-                    if (stream.next() === " ") return "custom-space";
-                    return null;
-                  },
-                });
+              //   internalCm.addOverlay({
+              //     token: (stream: StringStream): string | null => {
+              //       if (stream.next() === " ") return "custom-space";
+              //       return null;
+              //     },
+              //   });
 
-                internalCm.isOverlayAdded = true;
-              }}
+              //   internalCm.isOverlayAdded = true;
+              // }}
             />
           </div>
         </div>
