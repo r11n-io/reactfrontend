@@ -16,6 +16,11 @@ interface Category {
   isPrivate: boolean;
 }
 
+/**
+ * 카테고리 카드 컴포넌트
+ *
+ * @returns 카테고리 카드 JSX
+ */
 const defaultCategories: Category[] = [
   {
     icon: <HiCode className="w-5 h-5" />,

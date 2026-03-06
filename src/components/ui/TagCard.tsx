@@ -6,6 +6,12 @@ interface TagCardProps {
   tags: TagResponse[];
 }
 
+/**
+ * 해시태그 카드 컴포넌트
+ *
+ * @param props.tags 표시할 해시태그 목록
+ * @returns 해시태그 카드 JSX
+ */
 const TagCard: React.FC<TagCardProps> = ({ tags }) => (
   <Card>
     <h5 className="text-xl font-bold tracking-normal text-gray-900 dark:text-white">

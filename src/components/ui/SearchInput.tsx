@@ -4,6 +4,11 @@ import { useRef, useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+/**
+ * 검색 입력 컴포넌트
+ *
+ * @returns 검색 입력 폼 JSX
+ */
 const SearchInput: React.FC = () => {
   const [searchParam] = useSearchParams();
   const initialKeyword = searchParam.get("keyword") || "";

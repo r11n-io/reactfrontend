@@ -20,6 +20,12 @@ interface SeriesManageModalProps {
   onClose: () => void;
 }
 
+/**
+ * 시리즈 관리 모달 컴포넌트
+ *
+ * @param props.onClose 모달 닫기 핸들러
+ * @returns 시리즈 관리 모달 JSX
+ */
 const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -80,7 +86,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
   };
 
   const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setDescription(e.target.value);
   };

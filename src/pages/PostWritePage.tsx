@@ -17,6 +17,11 @@ import { getAllSeries } from "../api/SeriesApi";
 import type { SeriesResponse } from "../types/Series";
 import { handleError, handleSuccess } from "../utils/notifier";
 
+/**
+ * 게시글 작성/수정 페이지 컴포넌트
+ *
+ * @returns 게시글 작성/수정 페이지 JSX
+ */
 const PostWritePage: React.FC = () => {
   const { postId } = useParams<{ postId?: string }>();
   const isEditMode = useMemo(() => {

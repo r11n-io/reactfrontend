@@ -29,6 +29,11 @@ interface TableOfContentsItem {
   depth?: string;
 }
 
+/**
+ * 게시글 상세 페이지 컴포넌트
+ *
+ * @returns 게시글 상세 페이지 JSX
+ */
 const PostDetailPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { postId } = useParams<{ postId: string }>();
@@ -248,26 +253,6 @@ const PostDetailPage: React.FC = () => {
                         </code>
                       );
                     },
-                    // img: ({ alt, ...props }) => (
-                    //   <figure style={{ textAlign: "center", margin: "2rem 0" }}>
-                    //     <img
-                    //       {...props}
-                    //       alt={alt}
-                    //       style={{ maxWidth: "100%", borderRadius: "8px" }}
-                    //     />
-                    //     {alt && (
-                    //       <figcaption
-                    //         style={{
-                    //           fontSize: "0.9rem",
-                    //           color: "#666",
-                    //           marginTop: "0.5rem",
-                    //         }}
-                    //       >
-                    //         &lt;&lt; {alt} &gt;&gt;
-                    //       </figcaption>
-                    //     )}
-                    //   </figure>
-                    // ),
                   }}
                 />
               </div>

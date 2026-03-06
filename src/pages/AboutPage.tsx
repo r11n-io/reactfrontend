@@ -2,9 +2,13 @@ import { Card, FooterIcon } from "flowbite-react";
 import { FaEnvelope, FaGithub } from "react-icons/fa";
 import ProfileIcon from "../assets/me.jpg";
 
+/**
+ * 자기소개 페이지 컴포넌트
+ *
+ * @returns 자기소개 페이지 JSX
+ */
 const AboutPage: React.FC = () => {
   return (
-    // 최상위
     <div
       className="grid lg:grid-cols-3 xl:grid-cols-4 
         gap-6 py-6 px-10 overflow-hidden"
@@ -23,7 +27,7 @@ const AboutPage: React.FC = () => {
               alt="SW"
               className="rounded-full w-32 h-32 mx-auto mb-6 object-cover shadow-lg"
             />
-            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-xl font-extrabold text-gray-900 dark:text-white mb-2">
               reencarnation AKA r11n (김성웅)
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">

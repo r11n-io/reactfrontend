@@ -24,6 +24,15 @@ interface MainLayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * 메인 레이아웃 컴포넌트
+ * - 상단에 고정된 헤더와 하단 푸터를 포함
+ * - 헤더에는 로고, 검색, 메뉴, 인증 드롭다운이 포함
+ * - 페이지 콘텐츠는 헤더 아래에 위치하며, 스크롤이 가능하도록 설정
+ *
+ * @param props.children 페이지 콘텐츠로 렌더링될 자식 요소
+ * @returns Main layout JSX
+ */
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();

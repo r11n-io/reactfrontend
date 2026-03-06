@@ -14,6 +14,11 @@ import type { PostListResponse, PostSearchCondition } from "../types/Post";
 import type { TagResponse } from "../types/Tag";
 import { handleError } from "../utils/notifier";
 
+/**
+ * 게시글 목록 페이지 컴포넌트
+ *
+ * @returns 게시글 목록 페이지 JSX
+ */
 const PostListPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [posts, setPosts] = useState<PostListResponse[]>([]);

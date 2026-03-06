@@ -7,6 +7,11 @@ import TagCard from "../components/ui/TagCard";
 import type { PostListResponse } from "../types/Post";
 import type { TagResponse } from "../types/Tag";
 
+/**
+ * 홈페이지 컴포넌트
+ *
+ * @returns 홈페이지 컴포넌트 JSX
+ */
 const HomePage: React.FC = () => {
   const [latestPosts, setLatestPosts] = useState<PostListResponse[]>([]);
   const [allTags, setAllTags] = useState<TagResponse[]>([]);

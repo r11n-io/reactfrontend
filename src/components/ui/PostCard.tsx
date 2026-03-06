@@ -19,6 +19,12 @@ const stripMarkdown = (content: string): string => {
     .trim();
 };
 
+/**
+ * 게시글 카드 컴포넌트
+ *
+ * @param props.post 게시글 데이터
+ * @returns 게시글 카드 JSX
+ */
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div className="bg-transparent shadow-none border-0">

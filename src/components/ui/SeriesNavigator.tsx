@@ -16,6 +16,15 @@ interface SeriesNavigatorProps {
   seriesDescription: string;
 }
 
+/**
+ * 시리즈 내비게이터 컴포넌트
+ *
+ * @param props.seriesTitle 시리즈 제목
+ * @param props.seriesPosts 시리즈에 포함된 게시글 목록
+ * @param props.currentPostId 현재 보고 있는 게시글 ID
+ * @param props.seriesDescription 시리즈 설명 (툴팁으로 표시)
+ * @returns 시리즈 내비게이터 JSX
+ */
 const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
   seriesTitle,
   seriesPosts,

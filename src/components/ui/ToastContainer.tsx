@@ -15,6 +15,13 @@ const statusIcon = {
   info: { icon: HiExclamation, color: "blue" },
 };
 
+/**
+ * 토스트 메시지 컨테이너 컴포넌트
+ *
+ * @param props.messages 표시할 토스트 메시지 목록
+ * @param props.onClose 토스트 메시지 닫기 핸들러
+ * @returns 토스트 메시지 JSX
+ */
 const ToastContainer: React.FC<ToastContainerProps> = ({
   messages,
   onClose,

@@ -6,6 +6,11 @@ import { useAuth } from "../hooks/useAuth";
 import type { LoginRequest } from "../types/Auth";
 import { handleSuccess } from "../utils/notifier";
 
+/**
+ * 로그인 페이지 컴포넌트
+ *
+ * @returns 로그인 페이지 JSX
+ */
 const LoginPage: React.FC = () => {
   // 파라미터로 타입 정의
   const navigate = useNavigate();
