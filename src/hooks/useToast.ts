@@ -4,9 +4,13 @@ import type { ToastStatus } from "../types/ToastTypes";
 export type ToastContextType = (message: string, status: ToastStatus) => void;
 
 export const ToastContext = createContext<ToastContextType | undefined>(
-  undefined
+  undefined,
 );
 
+/**
+ * 토스트 메시지 추가 함수 훅
+ * @returns {ToastContextType} - 토스트 메시지 추가 함수
+ */
 export const useToast = () => {
   const context = useContext(ToastContext);
 

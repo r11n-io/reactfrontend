@@ -1,10 +1,20 @@
-// JWT 토큰 전송 Axios 인터셉터
+/**
+ * @file ApiClient.ts
+ * @description API 클라이언트 설정 및 인터셉터 구현
+ * @author R11n
+ */
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 import type { ProblemDetail, StandardizeError } from "../types/ProblemDetail";
 import { refreshAccessToken } from "./AuthApi";
 
 const MAX_RETRY_COUNT = 1;
 
+/**
+ * API 클라이언트 설정
+ * @param {string} baseURL - API의 기본 URL
+ * @returns {AxiosInstance} - 설정된 Axios 인스턴스
+ * @throws {Error} - API 요청 실패 시 발생하는 오류
+ */
 const apiClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}` + "/api" || "/api",
   headers: {
@@ -13,7 +23,9 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-// 요청 인터셉터 등록
+/**
+ * 요청 인터셉터
+ */
 apiClient.interceptors.request.use(
   (config) => {
     // 성공
@@ -31,7 +43,9 @@ apiClient.interceptors.request.use(
   },
 );
 
-// 응답 인터셉터
+/**
+ * 응답 인터셉터
+ */
 apiClient.interceptors.response.use(
   (response) => {
     // 성공

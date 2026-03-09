@@ -1,9 +1,17 @@
+/**
+ * @fileoverview API 요청 결과에 따른 사용자 알림 및 에러 처리 유틸리티
+ */
 import { showToast } from "../services/ToastService";
 import type { StandardizeError } from "../types/ProblemDetail";
 
+/**
+ * 성공적인 API 요청 처리
+ * @param {string} message 사용자에게 보여줄 성공 메시지
+ * @param {() => void} [natigationHandler] 추가적인 네비게이션 처리 함수
+ */
 export const handleSuccess = (
   message: string,
-  natigationHandler?: () => void
+  natigationHandler?: () => void,
 ) => {
   showToast(message, "success");
   if (natigationHandler) {
@@ -11,6 +19,11 @@ export const handleSuccess = (
   }
 };
 
+/**
+ * API 요청 실패 처리
+ * @param {unknown} error API 요청 중 발생한 에러 객체
+ * @returns {StandardizeError} 표준화된 에러 객체
+ */
 export const handleError = (error: unknown) => {
   const err = error as StandardizeError;
   let displayMessage = "알 수 없는 시스템 오류가 발생했습니다.";
