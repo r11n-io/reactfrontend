@@ -47,7 +47,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* 상단 헤더 */}
       <header className="fixed top-0 w-full z-10 bg-white shadow-md">
-        <Navbar fluid rounded>
+        <Navbar fluid>
           <div className="flex items-center gap-4">
             {/* 제목/로고 영역 */}
             <Link to="/">
@@ -131,7 +131,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </main>
 
       {/* 하단 푸터 */}
-      <Footer container>
+      <Footer container className="w-full rounded-none">
         <div className="w-full text-center">
           <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
             <FooterCopyright href="#" by="SW" year={2025} />
