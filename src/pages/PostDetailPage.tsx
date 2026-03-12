@@ -1,4 +1,5 @@
 import { Badge, Button, Card } from "flowbite-react";
+import "katex/dist/katex.min.css";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   HiArrowDown,
@@ -11,8 +12,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import { deletePost, getPost } from "../api/PostApi";
 import { getSeriesWithPosts } from "../api/SeriesApi";
 import SeriesNavigator from "../components/ui/SeriesNavigator";
@@ -219,10 +222,11 @@ const PostDetailPage: React.FC = () => {
               <div className="prose dark:prose-invert prose-sm max-w-none p-4">
                 <ReactMarkdown
                   children={post.content}
-                  remarkPlugins={[remarkGfm]}
+                  remarkPlugins={[remarkGfm, remarkMath]}
                   rehypePlugins={[
                     rehypeSlug,
                     [rehypeAutolinkHeadings, { behavior: "wrap" }],
+                    [rehypeKatex],
                   ]}
                   components={{
                     code({ className, children, ...props }) {
