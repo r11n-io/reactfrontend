@@ -184,7 +184,7 @@ const PostDetailPage: React.FC = () => {
       >
         {post ? (
           // 게시글 정상 조회 시 렌더링
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
             <main className="flex-1 min-w-0">
               <div className="max-w-[970px]">
                 <Button
@@ -278,83 +278,92 @@ const PostDetailPage: React.FC = () => {
               </div>
             </main>
 
-            <aside className="hidden lg:block w-[350px] shrink-0 sticky top-13 self-start">
-              <div className="space-y-8">
-                {/* 게시글 관리 영역 */}
-                {isAuthenticated ? (
-                  <Card>
-                    <h6 className="text-lg font-bold tracking-normal text-gray-900 dark:text-white">
-                      게시글 관리
-                    </h6>
-                    <div className="flex flex-row gap-2">
-                      <Button color="blue" size="sm" onClick={handleModify}>
-                        <HiOutlinePencil className="mr-2 h-5 w-5" />
-                        수정
-                      </Button>
-                      <Button color="red" size="sm" onClick={handleDelete}>
-                        <HiOutlineTrash className="mr-2 h-5 w-5" />
-                        삭제
-                      </Button>
-                    </div>
-                  </Card>
-                ) : null}
+            <aside className="hidden lg:block w-[350px] shrink-0 sticky top-24">
+              <div
+                className="overflow-y-auto pr-2 custom-scrollbar"
+                style={{
+                  height: "calc(100vh - 120px)",
+                }}
+              >
+                <div className="space-y-6">
+                  {/* 게시글 관리 영역 */}
+                  {isAuthenticated ? (
+                    <Card>
+                      <h6 className="text-lg font-bold tracking-normal text-gray-900 dark:text-white">
+                        게시글 관리
+                      </h6>
+                      <div className="flex flex-row gap-2">
+                        <Button color="blue" size="sm" onClick={handleModify}>
+                          <HiOutlinePencil className="mr-2 h-5 w-5" />
+                          수정
+                        </Button>
+                        <Button color="red" size="sm" onClick={handleDelete}>
+                          <HiOutlineTrash className="mr-2 h-5 w-5" />
+                          삭제
+                        </Button>
+                      </div>
+                    </Card>
+                  ) : null}
 
-                {/* 목차 영역 */}
-                {toc.length != 0 && (
-                  <Card>
-                    <h3 className="text-lg font-semibold mb-3">목차</h3>
-                    <ul className="space-y-2 mt-2">
-                      {toc.map((item) => {
-                        const getStyleByLevel = (level: number) => {
-                          switch (level) {
-                            case 2:
-                              return "text-[0.95rem] font-bold ml-0";
-                            case 3:
-                              return "text-[0.85rem] font-medium ml-3";
-                            case 4:
-                              return "text-[0.8rem] text-gray-500 ml-6";
-                            default:
-                              return "text-[0.75rem] text-gray-400 ml-9";
-                          }
-                        };
+                  {/* 목차 영역 */}
+                  {toc.length != 0 && (
+                    <Card>
+                      <h3 className="text-lg font-semibold mb-3">목차</h3>
+                      <ul className="space-y-2 mt-2">
+                        {toc.map((item) => {
+                          const getStyleByLevel = (level: number) => {
+                            switch (level) {
+                              case 2:
+                                return "text-[0.95rem] font-bold ml-0";
+                              case 3:
+                                return "text-[0.85rem] font-medium ml-3";
+                              case 4:
+                                return "text-[0.8rem] text-gray-500 ml-6";
+                              default:
+                                return "text-[0.75rem] text-gray-400 ml-9";
+                            }
+                          };
 
-                        return (
-                          <li key={item.id} className="leading-tight">
-                            <a
-                              href={`#${item.id}`}
-                              className={`${getStyleByLevel(item.level)} block transition-colors hover:text-blue-600 dark:hover:text-blue-400 hover:underline`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                const target = document.getElementById(item.id);
-                                if (target) {
-                                  target.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start",
-                                  });
-                                }
-                              }}
-                            >
-                              <span className="opacity-70 mr-1.5 font-mono text-[0.8em]">
-                                {item.depth}
-                              </span>
-                              {item.text}
-                            </a>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Card>
-                )}
+                          return (
+                            <li key={item.id} className="leading-tight">
+                              <a
+                                href={`#${item.id}`}
+                                className={`${getStyleByLevel(item.level)} block transition-colors hover:text-blue-600 dark:hover:text-blue-400 hover:underline`}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  const target = document.getElementById(
+                                    item.id,
+                                  );
+                                  if (target) {
+                                    target.scrollIntoView({
+                                      behavior: "smooth",
+                                      block: "start",
+                                    });
+                                  }
+                                }}
+                              >
+                                <span className="opacity-70 mr-1.5 font-mono text-[0.8em]">
+                                  {item.depth}
+                                </span>
+                                {item.text}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </Card>
+                  )}
 
-                {/* 시리즈 영역 */}
-                {post && post.seriesId && seriesDetail && (
-                  <SeriesNavigator
-                    seriesTitle={seriesDetail.title}
-                    seriesPosts={seriesDetail.posts}
-                    currentPostId={post.postId}
-                    seriesDescription={seriesDetail.description}
-                  />
-                )}
+                  {/* 시리즈 영역 */}
+                  {post && post.seriesId && seriesDetail && (
+                    <SeriesNavigator
+                      seriesTitle={seriesDetail.title}
+                      seriesPosts={seriesDetail.posts}
+                      currentPostId={post.postId}
+                      seriesDescription={seriesDetail.description}
+                    />
+                  )}
+                </div>
               </div>
             </aside>
           </div>

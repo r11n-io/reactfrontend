@@ -124,8 +124,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </header>
 
       {/* 페이지 콘텐츠 영역 */}
-      <main className="flex flex-grow overflow-hidden pt-16">
-        <div className="flex-grow overflow-y-auto p-4 bg-white dark:bg-gray-900">
+      <main className="flex flex-grow pt-16">
+        <div className="flex-grow p-4 bg-white dark:bg-gray-900">
           {children}
         </div>
       </main>
