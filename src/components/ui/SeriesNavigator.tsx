@@ -65,7 +65,7 @@ const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
                     </span>
                     {isCurrent && (
                       <span className="text-xs text-blue-700 dark:text-blue-200 ml-2">
-                        (현재 글)
+                        (now)
                       </span>
                     )}
                   </div>

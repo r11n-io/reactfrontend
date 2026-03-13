@@ -178,90 +178,15 @@ const PostDetailPage: React.FC = () => {
 
   return (
     <div className="relative">
-      <div ref={mainContentRef} className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
+      <div
+        ref={mainContentRef}
+        className="mx-auto max-w-[1440px] px-6 lg:px-12"
+      >
         {post ? (
           // 게시글 정상 조회 시 렌더링
-          <div className="grid lg:grid-cols-4 gap-8 items-start">
-            <div className="lg:col-span-3">
-              <Button
-                color="light"
-                size="sm"
-                className="mb-4"
-                onClick={handleGoback}
-              >
-                이전 화면으로
-              </Button>
-              {/* 포스트 제목 및 메타데이터 영역 */}
-              <header className="mb-6 pb-4 dark:bg-gray-800 bg-gray-200 p-4 rounded-lg">
-                <div className="flex flex-wrap gap-2 mb-2">
-                  <Badge
-                    color="info"
-                    className="text-xs font-semibold uppercase px-3 py-1 mr-2"
-                  >
-                    {post.category}
-                  </Badge>
-                  {post.tags.map((tag) => (
-                    <Badge
-                      color="blue"
-                      className="px-2 py-1 text-xs font-medium rounded-md"
-                      key={tag}
-                    >
-                      #{tag}
-                    </Badge>
-                  ))}
-                </div>
-                <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-                <div className="flex items-center text-sm text-gray-400 dark:text-gray-500 mt-2">
-                  <span>{new Date(post.createAt).toLocaleDateString()}</span>
-                  <span className="mx-2">|</span>
-                  <span>{`${formatTimeAgo(post.createAt)}`}</span>
-                </div>
-              </header>
-
-              {/* 마크다운 콘텐츠 영역 */}
-              <div className="prose dark:prose-invert prose-sm max-w-none p-4">
-                <ReactMarkdown
-                  children={post.content}
-                  remarkPlugins={[remarkGfm, remarkMath]}
-                  rehypePlugins={[
-                    rehypeSlug,
-                    [rehypeAutolinkHeadings, { behavior: "wrap" }],
-                    [rehypeKatex],
-                  ]}
-                  components={{
-                    code({ className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || "");
-                      const isCodeBlock = !!match;
-
-                      return isCodeBlock ? (
-                        <SyntaxHighlighter
-                          language={match[1]}
-                          style={vscDarkPlus}
-                          PreTag="div"
-                          customStyle={{
-                            fontSize: "1rem",
-                            lineHeight: "1.5",
-                            borderRadius: "0.5rem",
-                            margin: "1.5rem 0",
-                            backgroundColor: "#1e1e1e",
-                          }}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code
-                          className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-semibold text-red-500 dark:text-red-400"
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                  }}
-                />
-              </div>
-
-              <footer className="mt-4 p-4 border-t dark:border-gray-700 border-gray-300">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <main className="flex-1 min-w-0">
+              <div className="max-w-[970px]">
                 <Button
                   color="light"
                   size="sm"
@@ -270,11 +195,91 @@ const PostDetailPage: React.FC = () => {
                 >
                   이전 화면으로
                 </Button>
-              </footer>
-            </div>
+                {/* 포스트 제목 및 메타데이터 영역 */}
+                <header className="mb-6 pb-4 dark:bg-gray-800 bg-gray-200 p-4 rounded-lg">
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    <Badge
+                      color="info"
+                      className="text-xs font-semibold uppercase px-3 py-1 mr-2"
+                    >
+                      {post.category}
+                    </Badge>
+                    {post.tags.map((tag) => (
+                      <Badge
+                        color="blue"
+                        className="px-2 py-1 text-xs font-medium rounded-md"
+                        key={tag}
+                      >
+                        #{tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
+                  <div className="flex items-center text-sm text-gray-400 dark:text-gray-500 mt-2">
+                    <span>{new Date(post.createAt).toLocaleDateString()}</span>
+                    <span className="mx-2">|</span>
+                    <span>{`${formatTimeAgo(post.createAt)}`}</span>
+                  </div>
+                </header>
 
-            <aside className="lg:col-span-1">
-              <div className="sticky top-6 flex flex-col gap-4">
+                {/* 마크다운 콘텐츠 영역 */}
+                <div className="prose dark:prose-invert prose-lg max-w-none p-4">
+                  <ReactMarkdown
+                    children={post.content}
+                    remarkPlugins={[remarkGfm, remarkMath]}
+                    rehypePlugins={[
+                      rehypeSlug,
+                      [rehypeAutolinkHeadings, { behavior: "wrap" }],
+                      [rehypeKatex],
+                    ]}
+                    components={{
+                      code({ className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        const isCodeBlock = !!match;
+
+                        return isCodeBlock ? (
+                          <SyntaxHighlighter
+                            language={match[1]}
+                            style={vscDarkPlus}
+                            PreTag="div"
+                            customStyle={{
+                              fontSize: "1rem",
+                              lineHeight: "1.5",
+                              borderRadius: "0.5rem",
+                              margin: "1.5rem 0",
+                              backgroundColor: "#1e1e1e",
+                            }}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code
+                            className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-semibold text-red-500 dark:text-red-400"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  />
+                </div>
+
+                <footer className="mt-4 p-4 border-t dark:border-gray-700 border-gray-300">
+                  <Button
+                    color="light"
+                    size="sm"
+                    className="mb-4"
+                    onClick={handleGoback}
+                  >
+                    이전 화면으로
+                  </Button>
+                </footer>
+              </div>
+            </main>
+
+            <aside className="hidden lg:block w-[350px] shrink-0 sticky top-13 self-start">
+              <div className="space-y-8">
                 {/* 게시글 관리 영역 */}
                 {isAuthenticated ? (
                   <Card>
@@ -354,7 +359,7 @@ const PostDetailPage: React.FC = () => {
             </aside>
           </div>
         ) : (
-          "게시글 불러오기 에러."
+          "조회 중.."
         )}
       </div>
 
