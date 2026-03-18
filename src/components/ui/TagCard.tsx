@@ -27,7 +27,7 @@ const TagCard: React.FC<TagCardProps> = ({ tags }) => (
           <Link to={targetTo} key={tag.name}>
             <Badge
               color="blue"
-              className="px-3 py-1 font-medium rounded-lg hover:bg-blue-600 transition-colors"
+              className="rounded-lg px-3 py-1 font-medium transition-colors hover:bg-blue-600"
             >
               #{tag.name}
             </Badge>

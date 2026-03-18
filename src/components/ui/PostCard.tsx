@@ -27,19 +27,19 @@ const stripMarkdown = (content: string): string => {
  */
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
-    <div className="bg-transparent shadow-none border-0">
-      <div className="flex justify-between items-center mb-3">
+    <div className="border-0 bg-transparent shadow-none">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex flex-wrap gap-2">
           <Badge
             color="info"
-            className="text-xs font-semibold uppercase px-3 py-1 mr-2"
+            className="mr-2 px-3 py-1 text-xs font-semibold uppercase"
           >
             {post.category}
           </Badge>
           {post.tags.map((tag) => (
             <Badge
               color="blue"
-              className="px-2 py-1 text-xs font-medium rounded-md"
+              className="rounded-md px-2 py-1 text-xs font-medium"
               key={tag}
             >
               #{tag}
@@ -52,12 +52,12 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </div>
 
       <Link to={`/posts/${post.postId}`}>
-        <h5 className="text-xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white hover:underline line-clamp-1">
+        <h5 className="mb-2 line-clamp-1 text-xl font-bold tracking-tight text-gray-900 hover:underline dark:text-white">
           {post.title}
         </h5>
       </Link>
 
-      <p className="text-base font-normal tracking-tight text-gray-700 dark:text-gray-400 line-clamp-1">
+      <p className="line-clamp-1 text-base font-normal tracking-tight text-gray-700 dark:text-gray-400">
         {stripMarkdown(post.content)}
       </p>
 

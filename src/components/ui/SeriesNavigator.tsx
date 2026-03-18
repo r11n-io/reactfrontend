@@ -35,16 +35,13 @@ const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
 
   return (
     <Card>
-      <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
         {seriesTitle} ({seriesPosts.length}건)
         <Tooltip content={seriesDescription} placement="top" style="light">
-          <HiInformationCircle
-            className="w-5 h-5 text-gray-500 cursor-pointer 
-          hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          />
+          <HiInformationCircle className="h-5 w-5 cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
         </Tooltip>
       </h3>
-      <div className="h-[250px] overflow-y-auto border rounded-lg dark:border-gray-700">
+      <div className="h-[250px] overflow-y-auto rounded-lg border dark:border-gray-700">
         <ListGroup>
           {seriesPosts.map((post) => {
             const isCurrent = post.postId === currentPostId;
@@ -55,16 +52,16 @@ const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
                   href={`/posts/${post.postId}`}
                   className={`!p-3 ${
                     isCurrent
-                      ? "font-bold bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200"
+                      ? "bg-blue-100 font-bold text-blue-700 dark:bg-blue-900 dark:text-blue-200"
                       : "hover:bg-gray-50 dark:hover:bg-gray-600"
                   }`}
                 >
-                  <div className="flex justify-between items-center w-full">
+                  <div className="flex w-full items-center justify-between">
                     <span className="truncate">
                       {post.seriesOrder}. {post.title}
                     </span>
                     {isCurrent && (
-                      <span className="text-xs text-blue-700 dark:text-blue-200 ml-2">
+                      <span className="ml-2 text-xs text-blue-700 dark:text-blue-200">
                         (now)
                       </span>
                     )}

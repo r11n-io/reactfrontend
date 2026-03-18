@@ -37,17 +37,14 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   }, [messages, onClose]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-[1000]">
+    <div className="fixed right-4 bottom-4 z-[1000]">
       {messages.map((toast) => {
         const { icon: Icon, color } = statusIcon[toast.status];
 
         return (
           <Toast key={toast.id} className="mb-2">
             <div
-              className={`inline-flex h-8 w-8 shrink-0 
-                items-center justify-center rounded-lg 
-                bg-${color}-100 text-${color}-500 
-                dark:bg-${color}-800 dark:text-${color}-200`}
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-${color}-100 text-${color}-500 dark:bg-${color}-800 dark:text-${color}-200`}
             >
               <Icon className="h-5 w-5" />
             </div>

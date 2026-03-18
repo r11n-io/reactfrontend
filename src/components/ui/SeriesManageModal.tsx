@@ -93,13 +93,13 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
 
   return (
     <Modal show={true} onClose={onClose} size="lg">
-      <ModalHeader className="text-lg p-4">시리즈 관리</ModalHeader>
+      <ModalHeader className="p-4 text-lg">시리즈 관리</ModalHeader>
 
       <ModalBody>
         <div className="space-y-2">
           {/* 등록 폼 */}
           <section>
-            <div className="flex items-center gap-4 mb-2">
+            <div className="mb-2 flex items-center gap-4">
               <div className="w-18 shrink-0">
                 <Label htmlFor="title">제목 (필수)</Label>
               </div>
@@ -114,7 +114,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-4 mb-2">
+            <div className="mb-2 flex items-center gap-4">
               <div className="w-18 shrink-0">
                 <Label htmlFor="description">개요</Label>
               </div>
@@ -140,7 +140,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
           <hr className="my-4 border-gray-700 dark:border-gray-500" />
 
           <section>
-            <h3 className="font-medium mb-3 dark:text-white">
+            <h3 className="mb-3 font-medium dark:text-white">
               목록 총 [{allSeries.length ?? 0}] 건
             </h3>
             <div className="max-h-60 overflow-y-auto">
@@ -148,8 +148,8 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
                 {allSeries.length !== 0 ? (
                   allSeries.map((series) => (
                     <ListGroupItem key={series.seriesId} className="p-1">
-                      <div className="flex justify-between items-center w-full">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      <div className="flex w-full items-center justify-between">
+                        <div className="truncate text-sm font-medium text-gray-900 dark:text-white">
                           <span>[{series.seriesId}] - </span>
                           {series.title}
                         </div>
@@ -165,7 +165,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
                   ))
                 ) : (
                   // allSeries.map((series: SeriesResponse) => series.title)
-                  <ListGroupItem className="text-center text-gray-500 text-sm">
+                  <ListGroupItem className="text-center text-sm text-gray-500">
                     등록된 시리즈가 없습니다.
                   </ListGroupItem>
                 )}

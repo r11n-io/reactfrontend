@@ -184,8 +184,8 @@ const PostDetailPage: React.FC = () => {
       >
         {post ? (
           // 게시글 정상 조회 시 렌더링
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            <main className="flex-1 min-w-0">
+          <div className="flex flex-col items-start gap-8 lg:flex-row">
+            <main className="min-w-0 flex-1">
               <div className="max-w-[970px]">
                 <Button
                   color="light"
@@ -196,26 +196,26 @@ const PostDetailPage: React.FC = () => {
                   이전 화면으로
                 </Button>
                 {/* 포스트 제목 및 메타데이터 영역 */}
-                <header className="mb-6 pb-4 dark:bg-gray-800 bg-gray-200 p-4 rounded-lg">
-                  <div className="flex flex-wrap gap-2 mb-2">
+                <header className="mb-6 rounded-lg bg-gray-200 p-4 pb-4 dark:bg-gray-800">
+                  <div className="mb-2 flex flex-wrap gap-2">
                     <Badge
                       color="info"
-                      className="text-xs font-semibold uppercase px-3 py-1 mr-2"
+                      className="mr-2 px-3 py-1 text-xs font-semibold uppercase"
                     >
                       {post.category}
                     </Badge>
                     {post.tags.map((tag) => (
                       <Badge
                         color="blue"
-                        className="px-2 py-1 text-xs font-medium rounded-md"
+                        className="rounded-md px-2 py-1 text-xs font-medium"
                         key={tag}
                       >
                         #{tag}
                       </Badge>
                     ))}
                   </div>
-                  <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-                  <div className="flex items-center text-sm text-gray-400 dark:text-gray-500 mt-2">
+                  <h1 className="mb-2 text-2xl font-bold">{post.title}</h1>
+                  <div className="mt-2 flex items-center text-sm text-gray-400 dark:text-gray-500">
                     <span>{new Date(post.createAt).toLocaleDateString()}</span>
                     <span className="mx-2">|</span>
                     <span>{`${formatTimeAgo(post.createAt)}`}</span>
@@ -254,7 +254,7 @@ const PostDetailPage: React.FC = () => {
                           </SyntaxHighlighter>
                         ) : (
                           <code
-                            className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-semibold text-red-500 dark:text-red-400"
+                            className="rounded bg-gray-200 px-1.5 py-0.5 text-sm font-semibold text-red-500 dark:bg-gray-700 dark:text-red-400"
                             {...props}
                           >
                             {children}
@@ -265,7 +265,7 @@ const PostDetailPage: React.FC = () => {
                   />
                 </div>
 
-                <footer className="mt-4 p-4 border-t dark:border-gray-700 border-gray-300">
+                <footer className="mt-4 border-t border-gray-300 p-4 dark:border-gray-700">
                   <Button
                     color="light"
                     size="sm"
@@ -278,9 +278,9 @@ const PostDetailPage: React.FC = () => {
               </div>
             </main>
 
-            <aside className="hidden lg:block w-[350px] shrink-0 sticky top-24">
+            <aside className="sticky top-24 hidden w-[350px] shrink-0 lg:block">
               <div
-                className="overflow-y-auto pr-2 custom-scrollbar"
+                className="custom-scrollbar overflow-y-auto pr-2"
                 style={{
                   height: "calc(100vh - 120px)",
                 }}
@@ -308,8 +308,8 @@ const PostDetailPage: React.FC = () => {
                   {/* 목차 영역 */}
                   {toc.length != 0 && (
                     <Card>
-                      <h3 className="text-lg font-semibold mb-3">목차</h3>
-                      <ul className="space-y-2 mt-2">
+                      <h3 className="mb-3 text-lg font-semibold">목차</h3>
+                      <ul className="mt-2 space-y-2">
                         {toc.map((item) => {
                           const getStyleByLevel = (level: number) => {
                             switch (level) {
@@ -328,7 +328,7 @@ const PostDetailPage: React.FC = () => {
                             <li key={item.id} className="leading-tight">
                               <a
                                 href={`#${item.id}`}
-                                className={`${getStyleByLevel(item.level)} block transition-colors hover:text-blue-600 dark:hover:text-blue-400 hover:underline`}
+                                className={`${getStyleByLevel(item.level)} block transition-colors hover:text-blue-600 hover:underline dark:hover:text-blue-400`}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   const target = document.getElementById(
@@ -342,7 +342,7 @@ const PostDetailPage: React.FC = () => {
                                   }
                                 }}
                               >
-                                <span className="opacity-70 mr-1.5 font-mono text-[0.8em]">
+                                <span className="mr-1.5 font-mono text-[0.8em] opacity-70">
                                   {item.depth}
                                 </span>
                                 {item.text}
@@ -373,14 +373,14 @@ const PostDetailPage: React.FC = () => {
       </div>
 
       {/* 플로팅 버튼 그룹 */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-1">
+      <div className="fixed right-6 bottom-6 z-50 flex flex-col space-y-1">
         {showScrollTop && (
           <Button
             color="dark"
             pill
             size="lg"
             onClick={scrollToTop}
-            className="opacity-70 hover:opacity-100 transition-opacity"
+            className="opacity-70 transition-opacity hover:opacity-100"
           >
             <HiArrowUp className="h-6 w-6" />
           </Button>
@@ -392,7 +392,7 @@ const PostDetailPage: React.FC = () => {
             pill
             size="lg"
             onClick={scrollToBottom}
-            className="opacity-70 hover:opacity-100 transition-opacity"
+            className="opacity-70 transition-opacity hover:opacity-100"
           >
             <HiArrowDown className="h-6 w-6" />
           </Button>

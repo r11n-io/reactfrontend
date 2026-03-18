@@ -44,16 +44,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex min-h-screen flex-col bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       {/* 상단 헤더 */}
-      <header className="fixed top-0 w-full z-10 bg-white shadow-md">
+      <header className="fixed top-0 z-10 w-full bg-white shadow-md">
         <Navbar fluid>
           <div className="flex items-center gap-4">
             {/* 제목/로고 영역 */}
             <Link to="/">
               <NavbarBrand as="div" className="gap-2">
                 <HiHome className="h-6 w-6" />
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
                   r11n.io
                 </span>
               </NavbarBrand>
@@ -66,10 +66,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          <div className="flex items-center md:order-2 gap-8">
+          <div className="flex items-center gap-8 md:order-2">
             {/* 메뉴 */}
             <NavbarCollapse>
-              <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-4">
+              <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-4">
                 <Link
                   to="/posts"
                   className="border-r border-gray-300 pr-4 dark:border-gray-600"
@@ -83,7 +83,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </NavbarCollapse>
             {/* 인증 드롭다운 */}
             <Dropdown
-              label={<HiUserCircle className="w-6 h-6" />}
+              label={<HiUserCircle className="h-6 w-6" />}
               arrowIcon={false}
               inline
             >
@@ -125,7 +125,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
       {/* 페이지 콘텐츠 영역 */}
       <main className="flex flex-grow pt-16">
-        <div className="flex-grow p-4 bg-white dark:bg-gray-900">
+        <div className="flex-grow bg-white p-4 dark:bg-gray-900">
           {children}
         </div>
       </main>

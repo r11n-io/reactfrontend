@@ -98,11 +98,11 @@ const PostListPage: React.FC = () => {
 
   return (
     <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-5">
         {/* 좌측 게시글 영역 */}
-        <aside className="md:col-span-4 flex flex-col gap-2">
+        <aside className="flex flex-col gap-2 md:col-span-4">
           {/* 게시글 헤더 */}
-          <div className="flex justify-between items-center mb-2">
+          <div className="mb-2 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {currentTitle}
             </h2>
@@ -128,13 +128,13 @@ const PostListPage: React.FC = () => {
           <hr className="mb-4 border-gray-200 dark:border-gray-700" />
 
           {/* 게시글 목록: 2열 그리드 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
+          <div className="mb-2 grid grid-cols-1 gap-6 md:grid-cols-2">
             {posts.map((post: PostListResponse) => (
               <PostCard key={post.postId} post={post} />
             ))}
           </div>
           {/* 페이징 컴포넌트 자리: flowbite 컴포넌트 바로 쓰기 */}
-          <div className="flex overflow-x-auto justify-center">
+          <div className="flex justify-center overflow-x-auto">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -147,7 +147,7 @@ const PostListPage: React.FC = () => {
         </aside>
 
         {/* 우측 카드 영역 */}
-        <aside className="md:col-span-1 flex flex-col gap-4">
+        <aside className="flex flex-col gap-4 md:col-span-1">
           <TagCard tags={allTags} />
           <CategoryCard />
         </aside>

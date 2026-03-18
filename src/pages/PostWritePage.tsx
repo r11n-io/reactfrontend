@@ -170,12 +170,12 @@ const PostWritePage: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl py-10 px-4">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
+    <div className="mx-auto max-w-7xl px-4 py-10">
+      <h1 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
         새 글 작성
       </h1>
 
-      <Card className="p-2 mb-4">
+      <Card className="mb-4 p-2">
         <div className="flex items-center gap-4">
           <div className="w-24 shrink-0">
             <Label htmlFor="title">제목</Label>
@@ -216,7 +216,7 @@ const PostWritePage: React.FC = () => {
             <div className="w-24 shrink-0">
               <Label htmlFor="isPrivate">비밀글 여부</Label>
             </div>
-            <div className="flex-1 flex items-center">
+            <div className="flex flex-1 items-center">
               <ToggleSwitch
                 id="isPrivate"
                 checked={isPrivate}

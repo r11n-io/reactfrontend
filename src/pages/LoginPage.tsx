@@ -46,9 +46,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-50 dark:bg-gray-900">
-      <Card className="max-w-md w-full p-6 shadow-xl">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+    <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <Card className="w-full max-w-md p-6 shadow-xl">
+        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900 dark:text-white">
           로그인
         </h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

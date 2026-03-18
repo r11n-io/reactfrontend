@@ -36,7 +36,7 @@ const SearchInput: React.FC = () => {
 
   return (
     <form onSubmit={handleSearch}>
-      <div className="relative group">
+      <div className="group relative">
         <TextInput
           id="search"
           type="text"

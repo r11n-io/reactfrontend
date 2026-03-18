@@ -23,27 +23,27 @@ interface Category {
  */
 const defaultCategories: Category[] = [
   {
-    icon: <HiCode className="w-5 h-5" />,
+    icon: <HiCode className="h-5 w-5" />,
     label: "개발",
     isPrivate: false,
   },
   {
-    icon: <HiTranslate className="w-5 h-5" />,
+    icon: <HiTranslate className="h-5 w-5" />,
     label: "외국어",
     isPrivate: false,
   },
   {
-    icon: <HiBookOpen className="w-5 h-5" />,
+    icon: <HiBookOpen className="h-5 w-5" />,
     label: "독서",
     isPrivate: false,
   },
   {
-    icon: <HiPlay className="w-5 h-5" />,
+    icon: <HiPlay className="h-5 w-5" />,
     label: "영상 시청",
     isPrivate: true,
   },
   {
-    icon: <FaGamepad className="w-5 h-5" />,
+    icon: <FaGamepad className="h-5 w-5" />,
     label: "게임",
     isPrivate: true,
   },
@@ -74,7 +74,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           return (
             <Link
               to={targetTo}
-              className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
               key={cat.label}
             >
               <div className="flex items-center gap-3">
@@ -83,7 +83,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
                   {cat.label}
                 </span>
               </div>
-              <HiArrowRight className="w-5 h-5" />
+              <HiArrowRight className="h-5 w-5" />
             </Link>
           );
         })}

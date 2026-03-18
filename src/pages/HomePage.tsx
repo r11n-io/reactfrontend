@@ -39,9 +39,9 @@ const HomePage: React.FC = () => {
   return (
     <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
       {/* 메인 3열 그리드 컨테이너 */}
-      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-5">
         {/* 좌측 카드 영역 */}
-        <aside className="md:col-span-1 flex flex-col gap-4">
+        <aside className="flex flex-col gap-4 md:col-span-1">
           <CategoryCard />
         </aside>
 
@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
         <main className="md:col-span-3">
           {/* TODO: 게시판 구분 상관없이 조회되어야 함 */}
           <hr className="border-gray-200 dark:border-gray-700" />
-          <p className="text-gray-500 dark:text-gray-400 my-4">
+          <p className="my-4 text-gray-500 dark:text-gray-400">
             최근 게시 총 <b>{latestPosts.length}</b> 건
           </p>
           <hr className="mb-4 border-gray-200 dark:border-gray-700" />
