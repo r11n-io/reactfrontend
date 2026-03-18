@@ -283,8 +283,7 @@ const AboutPage: React.FC = () => {
               {["책읽기", "커피", "조깅", "생존요리"].map((tag) => (
                 <Badge
                   key={tag}
-                  color="blue"
-                  className="rounded-lg px-3 py-1 font-medium transition-colors hover:bg-blue-600"
+                  className="bg-accent hover:!bg-accent/80 text-tag-text rounded-md px-2 py-1 text-xs font-medium"
                 >
                   #{tag}
                 </Badge>

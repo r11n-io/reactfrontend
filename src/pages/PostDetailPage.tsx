@@ -207,7 +207,7 @@ const PostDetailPage: React.FC = () => {
                     {post.tags.map((tag) => (
                       <Badge
                         color="blue"
-                        className="rounded-md px-2 py-1 text-xs font-medium"
+                        className="bg-accent hover:!bg-accent/80 text-tag-text rounded-md px-2 py-1 text-xs font-medium"
                         key={tag}
                       >
                         #{tag}

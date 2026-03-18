@@ -59,8 +59,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   const { isAuthenticated } = useAuth();
 
   return (
-    <Card>
-      <h5 className="text-xl font-bold tracking-normal text-gray-900 dark:text-white">
+    <Card className="bg-surface !border-secondary-text/10 shadow-none">
+      <h5 className="text-primary-text text-xl font-bold tracking-normal">
         카테고리 바로가기
       </h5>
       <div className="flex flex-col gap-1">
@@ -74,16 +74,18 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           return (
             <Link
               to={targetTo}
-              className="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="group hover:bg-main flex items-center justify-between rounded-lg p-3 transition-colors"
               key={cat.label}
             >
               <div className="flex items-center gap-3">
-                {cat.icon}
-                <span className="text-gray-900 dark:text-white">
+                <span className="text-secondary-text group-hover:!text-accent transition-colors">
+                  {cat.icon}
+                </span>
+                <span className="text-primary-text font-medium">
                   {cat.label}
                 </span>
               </div>
-              <HiArrowRight className="h-5 w-5" />
+              <HiArrowRight className="text-secondary-text group-hover:text-accent h-5 w-5 transition-colors" />
             </Link>
           );
         })}

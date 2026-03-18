@@ -13,8 +13,8 @@ interface TagCardProps {
  * @returns 해시태그 카드 JSX
  */
 const TagCard: React.FC<TagCardProps> = ({ tags }) => (
-  <Card>
-    <h5 className="text-xl font-bold tracking-normal text-gray-900 dark:text-white">
+  <Card className="bg-surface border-secondary-text/10 shadow-none">
+    <h5 className="text-primary-text text-xl font-bold tracking-normal">
       해시태그
     </h5>
     <div className="flex flex-wrap gap-2">
@@ -25,10 +25,7 @@ const TagCard: React.FC<TagCardProps> = ({ tags }) => (
 
         return (
           <Link to={targetTo} key={tag.name}>
-            <Badge
-              color="blue"
-              className="rounded-lg px-3 py-1 font-medium transition-colors hover:bg-blue-600"
-            >
+            <Badge className="bg-accent hover:!bg-accent/80 text-tag-text rounded-lg px-3 py-1 font-medium transition-opacity hover:opacity-80">
               #{tag.name}
             </Badge>
           </Link>

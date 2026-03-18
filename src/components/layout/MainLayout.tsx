@@ -44,16 +44,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    <div className="bg-main text-primary-text flex min-h-screen flex-col">
       {/* 상단 헤더 */}
-      <header className="fixed top-0 z-10 w-full bg-white shadow-md">
-        <Navbar fluid>
+      <header className="border-secondary-text/10 fixed top-0 z-10 w-full border-b">
+        <Navbar fluid className="!bg-surface">
           <div className="flex items-center gap-4">
             {/* 제목/로고 영역 */}
             <Link to="/">
               <NavbarBrand as="div" className="gap-2">
-                <HiHome className="h-6 w-6" />
-                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+                <HiHome className="text-accent h-6 w-6" />
+                <span className="self-center text-xl font-semibold whitespace-nowrap">
                   r11n.io
                 </span>
               </NavbarBrand>
@@ -72,50 +72,65 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-4">
                 <Link
                   to="/posts"
-                  className="border-r border-gray-300 pr-4 dark:border-gray-600"
+                  className="border-secondary-text/20 pr-4 md:border-r"
                 >
-                  <NavbarLink as="div">게시판</NavbarLink>
+                  <NavbarLink as="div" className="!text-primary-text font-bold">
+                    게시판
+                  </NavbarLink>
                 </Link>
                 <Link to="/about">
-                  <NavbarLink as="div">소개</NavbarLink>
+                  <NavbarLink as="div" className="!text-primary-text font-bold">
+                    소개
+                  </NavbarLink>
                 </Link>
               </div>
             </NavbarCollapse>
+
             {/* 인증 드롭다운 */}
             <Dropdown
-              label={<HiUserCircle className="h-6 w-6" />}
+              className="bg-main"
+              label={<HiUserCircle className="text-primary-text h-6 w-6" />}
               arrowIcon={false}
               inline
             >
-              {isAuthenticated ? (
-                <>
-                  <DropdownHeader>
-                    <span className="block truncate text-sm font-medium">
-                      로그인되었습니다
-                    </span>
-                  </DropdownHeader>
-                  <DropdownItem onClick={handleLogout}>로그아웃</DropdownItem>
-                </>
-              ) : (
-                <>
-                  <DropdownHeader>
-                    <span className="block text-sm">게스트</span>
-                    <span className="block truncate text-sm font-medium">
-                      로그인이 필요합니다
-                    </span>
-                  </DropdownHeader>
-                  <DropdownItem>
-                    <Link to="/login" className="block w-full text-left">
-                      로그인
-                    </Link>
-                  </DropdownItem>
-                </>
-              )}
-              <DropdownItem>
-                <Link to="setting" className="block w-full text-left">
-                  설정
-                </Link>
-              </DropdownItem>
+              <div className="bg-main text-primary-text border-secondary-text/10 border shadow-xl">
+                {isAuthenticated ? (
+                  <>
+                    <DropdownHeader className="border-secondary-text/10 border-b">
+                      <span className="block truncate text-sm font-medium">
+                        로그인되었습니다
+                      </span>
+                    </DropdownHeader>
+                    <DropdownItem
+                      className="hover:!bg-main"
+                      onClick={handleLogout}
+                    >
+                      로그아웃
+                    </DropdownItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownHeader className="border-secondary-text/10 border-b">
+                      <span className="text-secondary-text block text-sm">
+                        게스트
+                      </span>
+                      <span className="block truncate text-sm font-medium">
+                        로그인이 필요합니다
+                      </span>
+                    </DropdownHeader>
+                    <DropdownItem className="hover:!bg-main">
+                      <Link to="/login" className="block w-full text-left">
+                        로그인
+                      </Link>
+                    </DropdownItem>
+                  </>
+                )}
+                <DropdownItem className="hover:!bg-main">
+                  <Link to="setting" className="block w-full text-left">
+                    설정
+                  </Link>
+                </DropdownItem>
+              </div>
             </Dropdown>
             {/* 모바일 메뉴 토글 */}
             <NavbarToggle />
@@ -125,19 +140,33 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
       {/* 페이지 콘텐츠 영역 */}
       <main className="flex flex-grow pt-16">
-        <div className="flex-grow bg-white p-4 dark:bg-gray-900">
-          {children}
-        </div>
+        <div className="bg-main flex-grow p-4">{children}</div>
       </main>
 
       {/* 하단 푸터 */}
-      <Footer container className="w-full rounded-none">
+      <Footer
+        container
+        className="!bg-surface border-secondary-text/10 w-full rounded-none border-t !shadow-none"
+      >
         <div className="w-full text-center">
           <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
-            <FooterCopyright href="#" by="SW" year={2025} />
+            <FooterCopyright
+              href="#"
+              by="Learning & Writing BY r11n"
+              year={2025}
+              className="text-secondary-text"
+            />
             <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-              <FooterIcon href="mailto:thearch90@gmail.com" icon={FaEnvelope} />
-              <FooterIcon href="https://github.com/r11n-io" icon={FaGithub} />
+              <FooterIcon
+                href="mailto:thearch90@gmail.com"
+                icon={FaEnvelope}
+                className="text-secondary-text hover:text-accent"
+              />
+              <FooterIcon
+                href="https://github.com/r11n-io"
+                icon={FaGithub}
+                className="text-secondary-text hover:text-accent"
+              />
             </div>
           </div>
         </div>

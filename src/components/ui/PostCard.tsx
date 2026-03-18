@@ -30,38 +30,34 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     <div className="border-0 bg-transparent shadow-none">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex flex-wrap gap-2">
-          <Badge
-            color="info"
-            className="mr-2 px-3 py-1 text-xs font-semibold uppercase"
-          >
+          <Badge className="!bg-accent/40 !text-accent mr-2 px-3 py-1 text-xs font-semibold uppercase">
             {post.category}
           </Badge>
           {post.tags.map((tag) => (
             <Badge
-              color="blue"
-              className="rounded-md px-2 py-1 text-xs font-medium"
+              className="bg-accent hover:!bg-accent/80 text-tag-text rounded-md px-2 py-1 text-xs font-medium"
               key={tag}
             >
               #{tag}
             </Badge>
           ))}
         </div>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
+        <span className="text-secondary-text text-xs">
           {formatTimeAgo(post.createAt)}
         </span>
       </div>
 
       <Link to={`/posts/${post.postId}`}>
-        <h5 className="mb-2 line-clamp-1 text-xl font-bold tracking-tight text-gray-900 hover:underline dark:text-white">
+        <h5 className="text-primary-text hover:text-accent mb-2 line-clamp-1 text-xl font-bold tracking-tight transition-colors">
           {post.title}
         </h5>
       </Link>
 
-      <p className="line-clamp-1 text-base font-normal tracking-tight text-gray-700 dark:text-gray-400">
+      <p className="text-secondary-text line-clamp-1 text-base font-normal tracking-tight">
         {stripMarkdown(post.content)}
       </p>
 
-      <hr className="mt-4 border-gray-200 dark:border-gray-700" />
+      <hr className="border-secondary-text/20 mt-4" />
     </div>
   );
 };

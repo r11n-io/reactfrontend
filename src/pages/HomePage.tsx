@@ -47,12 +47,13 @@ const HomePage: React.FC = () => {
 
         {/* 중앙 게시글 목록 영역 */}
         <main className="md:col-span-3">
-          {/* TODO: 게시판 구분 상관없이 조회되어야 함 */}
-          <hr className="border-gray-200 dark:border-gray-700" />
-          <p className="my-4 text-gray-500 dark:text-gray-400">
+          <hr className="!border-secondary-text/10" />
+
+          <p className="text-secondary-text my-4">
             최근 게시 총 <b>{latestPosts.length}</b> 건
           </p>
-          <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+          <hr className="!border-secondary-text/10 mb-4" />
 
           <div className="flex flex-col gap-4">
             {latestPosts.map((post) => (

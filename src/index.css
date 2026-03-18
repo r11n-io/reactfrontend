@@ -4,10 +4,62 @@
 @source "../.flowbite-react/class-list.json";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* 테마 */
+:root {
+  --color-main: #f8f5f2;
+  --color-surface: #fffffe;
+  --color-primary-text: #232323;
+  --color-secondary-text: #222525;
+  --color-tag-text: #fffffe;
+  --color-accent: #078080;
+}
+
+.dark {
+  --color-main: #16161a;
+  --color-surface: #242629;
+  --color-primary-text: #fffffe;
+  --color-secondary-text: #94a1b2;
+  --color-tag-text: #fffffe;
+  --color-accent: #7f5af0;
+}
+
 @theme {
+  --color-main: var(--color-main);
+  --color-surface: var(--color-surface);
+  --color-primary-text: var(--color-primary-text);
+  --color-secondary-text: var(--color-secondary-text);
+  --color-tag-text: var(--color-tag-text);
+  --color-accent: var(--color-accent);
   --font-sans:
     "Noto Sans KR", "Noto Sans JP", "Noto Sans SC", "Noto Sans TC", "Noto Sans",
     sans-serif;
+}
+
+@layer utilities {
+  .bg-main {
+    background-color: var(--color-main);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  .text-primary-text {
+    color: var(--color-primary-text);
+  }
+  .text-secondary-text {
+    color: var(--color-secondary-text);
+  }
+  .text-tag-text {
+    color: var(--color-tag-text);
+  }
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-main text-primary-text transition-colors duration-200;
+  }
 }
 
 /* 목차 스크롤용 */
