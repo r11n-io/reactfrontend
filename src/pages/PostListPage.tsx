@@ -97,12 +97,12 @@ const PostListPage: React.FC = () => {
   const handleCloseModal = () => setIsSeriesModalOpen(false);
 
   return (
-    <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-5">
         {/* 좌측 게시글 영역 */}
         <aside className="flex flex-col gap-2 md:col-span-4">
           {/* 게시글 헤더 */}
-          <div className="mb-2 flex items-center justify-between">
+          <div className="mb-1 flex items-center justify-between">
             <h2 className="text-primary-text text-2xl font-black tracking-tight">
               {currentTitle}
             </h2>
