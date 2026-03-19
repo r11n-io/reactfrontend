@@ -1,10 +1,22 @@
 import { Button, Card, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
+import { HiInformationCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/AuthApi";
 import { useAuth } from "../hooks/useAuth";
 import type { LoginRequest } from "../types/Auth";
 import { handleSuccess } from "../utils/notifier";
+
+const customInputTheme = {
+  field: {
+    input: {
+      base: "!bg-main/50 !text-primary-text !border-secondary-text/20 block w-full border disabled:cursor-not-allowed disabled:opacity-50 rounded-lg transition-all",
+      colors: {
+        gray: "focus:!border-accent focus:!ring-accent/30",
+      },
+    },
+  },
+};
 
 /**
  * 로그인 페이지 컴포넌트
@@ -46,15 +58,24 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <Card className="w-full max-w-md p-6 shadow-xl">
-        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900 dark:text-white">
-          로그인
-        </h1>
+    <div className="bg-main flex min-h-[calc(100-64px)] items-center justify-center p-4">
+      <Card className="bg-surface !border-secondary-text/10 w-full max-w-md p-2 shadow-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-primary-text text-3xl font-black tracking-tighter">
+            r11n.io
+          </h1>
+          <p className="text-secondary-text mt-2 text-sm font-medium">Login</p>
+        </div>
+
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email">이메일</Label>
+              <Label
+                htmlFor="email"
+                className="text-secondary-text text-xs font-bold tracking-wider uppercase"
+              >
+                이메일
+              </Label>
             </div>
             <TextInput
               id="email"
@@ -63,11 +84,17 @@ const LoginPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              theme={customInputTheme}
             />
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="password">비밀번호</Label>
+              <Label
+                htmlFor="password"
+                className="text-secondary-text text-xs font-bold tracking-wider uppercase"
+              >
+                비밀번호
+              </Label>
             </div>
             <TextInput
               id="password"
@@ -75,35 +102,27 @@ const LoginPage: React.FC = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              theme={customInputTheme}
             />
           </div>
 
           {error && (
             <div
-              className="flex items-center rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
+              className="flex items-center rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
               role="alert"
             >
-              <svg
-                className="mr-3 inline h-4 w-4 flex-shrink-0"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="sr-only">Error</span>
+              <HiInformationCircle className="mr-3 h-5 w-5 shrink-0" />
               <div>
-                <span className="font-medium">로그인 오류:</span> {error}
+                <span className="font-bold">오류:</span> {error}
               </div>
             </div>
           )}
 
-          <Button type="submit" className="mt-4" color="cyan">
-            {isLoading ? "로그인 중.." : "로그인"}
+          <Button
+            type="submit"
+            className="!bg-accent hover:!bg-accent-hover !text-on-accent shadow-accent/20 mt-2 border-none shadow-lg transition-all duration-300"
+          >
+            {isLoading ? "인증 중.." : "로그인"}
           </Button>
         </form>
       </Card>

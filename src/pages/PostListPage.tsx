@@ -103,17 +103,20 @@ const PostListPage: React.FC = () => {
         <aside className="flex flex-col gap-2 md:col-span-4">
           {/* 게시글 헤더 */}
           <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-primary-text text-2xl font-black tracking-tight">
               {currentTitle}
             </h2>
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <div className="flex gap-2">
-                <Button color="alternative" onClick={handleOpenModal}>
+                <Button
+                  onClick={handleOpenModal}
+                  className="!bg-secondary-text/5 !text-secondary-text hover:!bg-secondary-text/10 border-none transition-all"
+                >
                   <HiListBullet className="mr-2 h-4 w-4" />
                   시리즈 관리
                 </Button>
                 <Link to="write">
-                  <Button>
+                  <Button className="!bg-accent hover:!bg-accent-hover !text-on-accent shadow-accent/20 border-none shadow-lg transition-all">
                     <HiPencil className="mr-2 h-4 w-4" />새 게시글 등록
                   </Button>
                 </Link>
@@ -121,11 +124,10 @@ const PostListPage: React.FC = () => {
                   <SeriesManageModal onClose={handleCloseModal} />
                 )}
               </div>
-            ) : (
-              <></>
             )}
           </div>
-          <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+          <hr className="border-secondary-text/10 mb-8" />
 
           {/* 게시글 목록: 2열 그리드 */}
           <div className="mb-2 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -133,6 +135,7 @@ const PostListPage: React.FC = () => {
               <PostCard key={post.postId} post={post} />
             ))}
           </div>
+
           {/* 페이징 컴포넌트 자리: flowbite 컴포넌트 바로 쓰기 */}
           <div className="flex justify-center overflow-x-auto">
             <Pagination
@@ -142,6 +145,14 @@ const PostListPage: React.FC = () => {
               showIcons
               nextLabel="다음"
               previousLabel="이전"
+              theme={{
+                pages: {
+                  selector: {
+                    base: "w-10 h-10 !bg-transparent !text-secondary-text hover:!bg-secondary-text/10 !border-none",
+                    active: "!bg-accent/20 !text-accent !font-bold",
+                  },
+                },
+              }}
             />
           </div>
         </aside>

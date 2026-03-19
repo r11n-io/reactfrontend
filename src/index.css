@@ -68,43 +68,87 @@ h3,
 h4,
 h5,
 h6 {
-  scroll-margin-top: 6rem; /* 헤더 높이만큼 여백 추가 */
+  scroll-margin-top: 6rem;
 }
 
-/* EasyMDE 다크 모드 스타일 오버라이드 */
-.dark .markdown-editor-simplemde .editor-toolbar,
-.dark .markdown-editor-simplemde .editor-preview-full,
-.dark .markdown-editor-simplemde .CodeMirror {
-  background-color: #1f2937 !important;
-  color: #ffffff !important;
-  border-color: #374151 !important;
-}
+/* EasyMDE / CodeMirror 통합 테마 오버라이드 */
 
-.dark .editor-toolbar {
-  background-color: #374151 !important;
-}
-
-.dark .editor-toolbar button {
-  color: #d1d5db !important;
-}
-
-.dark .editor-toolbar button.active,
-.dark .editor-toolbar button:hover {
-  background-color: #4b5563 !important;
-}
-
+/* 1. 기본 배경 및 테두리 */
+.markdown-editor-simplemde .editor-toolbar,
 .markdown-editor-simplemde .CodeMirror,
-.markdown-editor-simplemde .editor-preview {
-  font-size: var(--text-lg) !important;
+.markdown-editor-simplemde .editor-preview-full {
+  background-color: var(--color-bg-surface) !important;
+  color: var(--color-primary-text) !important;
+  border-color: rgba(var(--color-secondary-text-rgb), 0.1) !important;
+}
+
+/* 2. 툴바 스타일 (상단 바) */
+.markdown-editor-simplemde .editor-toolbar {
+  background-color: rgba(var(--color-secondary-text-rgb), 0.03) !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+}
+
+.markdown-editor-simplemde .editor-toolbar button {
+  color: var(--color-secondary-text) !important;
+  transition: all 0.2s;
+}
+
+.markdown-editor-simplemde .editor-toolbar button.active,
+.markdown-editor-simplemde .editor-toolbar button:hover {
+  background-color: var(--color-accent) !important;
+  color: var(--color-on-accent) !important;
+}
+
+/* 3. 에디터 폰트 및 커서 */
+.markdown-editor-simplemde .CodeMirror {
   font-family: var(--font-sans) !important;
-  letter-spacing: -0.015em !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  padding: 10px 0;
 }
 
 .dark .CodeMirror-cursor {
-  border-left-color: #ffffff !important; /* 커서 색상을 흰색으로 변경 */
+  border-left: 2px solid var(--color-accent) !important;
+  height: 1.3em !important;
+  margin-top: 0.2em !important;
 }
 
-/* 에디터 상세와 *유사* 하게 보이게.. */
+/* --- 조판 부호 (Invisibles) 스타일 --- */
+/* 1. 기본 공백 (Dot) */
+.markdown-editor-simplemde .cm-custom-space::before {
+  content: "·";
+  color: var(--color-accent) !important;
+  opacity: 0.2;
+}
+
+/* 2. 탭 공백 (Arrow) - 액센트 컬러 활용 */
+.markdown-editor-simplemde .cm-tab::before {
+  content: "→";
+  color: var(--color-accent) !important;
+  opacity: 0.6;
+}
+
+.markdown-editor-simplemde .cm-tab::after {
+  border-bottom: 1px dashed var(--color-accent) !important;
+  opacity: 0.3;
+}
+
+/* 3. 문장 끝 공백 (Paragraph Mark) */
+.markdown-editor-simplemde .cm-trailing-space-a,
+.markdown-editor-simplemde .cm-trailing-space-new-line {
+  background-color: rgba(var(--color-accent-rgb), 0.05) !important;
+}
+
+.markdown-editor-simplemde .cm-trailing-space-a:last-of-type::before,
+.markdown-editor-simplemde .cm-trailing-space-new-line:last-of-type::before {
+  content: "¶";
+  color: var(--color-accent) !important;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+/* 에디터: 상세와 *유사* 하게 보이게.. */
 .cm-s-easymde .cm-header-1 {
   font-size: 2.8rem !important;
   text-decoration: underline;
@@ -140,6 +184,10 @@ h6 {
   opacity: 0.8;
 }
 
+.CodeMirror-line {
+  line-height: 1.6 !important;
+}
+
 /* 인라인 코드 스타일 */
 :not(pre) > code {
   font-family:
@@ -161,82 +209,6 @@ h6 {
   color: rgb(212, 212, 212);
   font-size: 0.9em;
   word-break: break-all;
-}
-
-/* 조판 부호 스타일 */
-/* 1. 기본 공백 */
-.markdown-editor-simplemde .cm-custom-space {
-  color: transparent !important;
-  position: relative;
-  display: inline;
-}
-
-.markdown-editor-simplemde .cm-custom-space::before {
-  content: "·";
-  position: absolute;
-  right: 40%; /* 임시 */
-  width: 100%;
-  text-align: center;
-  top: 50%;
-  transform: translateY(-50%);
-  line-height: 1;
-  color: rgba(46, 204, 113, 0.8);
-  font-size: 1em;
-  pointer-events: none;
-}
-
-/* 2. 탭 공백 */
-.markdown-editor-simplemde .cm-tab {
-  position: relative;
-  color: transparent !important;
-  border-bottom: 1px solid rgba(255, 165, 2, 0.1);
-}
-
-.markdown-editor-simplemde .cm-tab::before {
-  content: "›";
-  position: absolute;
-  color: #ff9f43;
-  font-size: 1.2em;
-  top: 45%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.markdown-editor-simplemde .cm-tab::after {
-  content: "";
-  position: absolute;
-  left: 15px;
-  right: 5px;
-  top: 50%;
-  border-bottom: 1px dashed rgba(255, 165, 2, 0.3);
-  height: 0;
-}
-
-/* 3. 문장 끝 공백 */
-.markdown-editor-simplemde .cm-trailing-space-a,
-.markdown-editor-simplemde .cm-trailing-space-new-line {
-  display: inline;
-  position: relative;
-  background-color: rgba(46, 204, 113, 0.1) !important;
-  color: transparent !important;
-  text-decoration: none !important;
-}
-
-.markdown-editor-simplemde .cm-trailing-space-a::before,
-.markdown-editor-simplemde .cm-trailing-space-new-line::before {
-  content: "";
-}
-
-.markdown-editor-simplemde .cm-trailing-space-a:last-of-type::before,
-.markdown-editor-simplemde .cm-trailing-space-new-line:last-of-type::before {
-  content: "¶";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: rgba(46, 204, 113, 0.8);
-  font-size: 18px;
-  font-weight: bold;
 }
 
 /* 마크다운 상세 스타일 */
@@ -280,9 +252,9 @@ blockquote {
   flex-shrink: 0;
 }
 
-/* 상세 사이드바 스크롤바 */
+/* 사이드바 등 내부 요소 전용 스크롤바 */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -290,12 +262,18 @@ blockquote {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.2);
-  border-radius: 10px;
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.5);
+  background: var(--color-accent);
 }
 
 /* 브라우저 전체(body) 스크롤바 */
@@ -304,15 +282,22 @@ blockquote {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: var(--color-bg-main);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: rgba(156, 163, 175, 0.3);
   border-radius: 10px;
-  border: 2px solid #0f172a;
+  border: 3px solid var(--color-bg-main);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg-main);
 }

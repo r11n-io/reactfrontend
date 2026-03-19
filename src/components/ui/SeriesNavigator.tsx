@@ -34,15 +34,28 @@ const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
   const currentItemRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Card>
-      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-        {seriesTitle} ({seriesPosts.length}건)
-        <Tooltip content={seriesDescription} placement="top" style="light">
-          <HiInformationCircle className="h-5 w-5 cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
-        </Tooltip>
-      </h3>
-      <div className="h-[250px] overflow-y-auto rounded-lg border dark:border-gray-700">
-        <ListGroup>
+    <Card className="!bg-surface !border-secondary-text/10 shadow-none">
+      <div className="mb-3 flex items-center justify-between gap-2 overflow-hidden">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <h3 className="text-primary-text truncate text-lg font-bold tracking-tight">
+            <Tooltip content={seriesTitle} placement="top" style="light">
+              {seriesTitle}
+            </Tooltip>
+          </h3>
+
+          <span className="text-secondary-text shrink-0 text-sm font-normal">
+            {" "}
+            ({seriesPosts.length}건)
+          </span>
+
+          <Tooltip content={seriesDescription} placement="top" style="light">
+            <HiInformationCircle className="text-secondary-text hover:text-accent h-5 w-5 cursor-pointer transition-colors" />
+          </Tooltip>
+        </div>
+      </div>
+
+      <div className="custom-scrollbar border-secondary-text/10 bg-main/30 h-[250px] overflow-y-auto rounded-lg border">
+        <ListGroup className="!border-none !bg-transparent">
           {seriesPosts.map((post) => {
             const isCurrent = post.postId === currentPostId;
 
@@ -50,19 +63,19 @@ const SeriesNavigator: React.FC<SeriesNavigatorProps> = ({
               <div key={post.postId} ref={isCurrent ? currentItemRef : null}>
                 <ListGroupItem
                   href={`/posts/${post.postId}`}
-                  className={`!p-3 ${
+                  className={`!border-none !p-3 transition-all duration-200 ${
                     isCurrent
-                      ? "bg-blue-100 font-bold text-blue-700 dark:bg-blue-900 dark:text-blue-200"
-                      : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                      ? "!bg-accent/15 !text-accent font-bold shadow-inner"
+                      : "!text-primary-text hover:!bg-main hover:!pl-5"
                   }`}
                 >
                   <div className="flex w-full items-center justify-between">
-                    <span className="truncate">
+                    <span className="truncate pr-2 text-sm">
                       {post.seriesOrder}. {post.title}
                     </span>
                     {isCurrent && (
-                      <span className="ml-2 text-xs text-blue-700 dark:text-blue-200">
-                        (now)
+                      <span className="text-accent ml-2 text-[10px] font-bold tracking-widest uppercase">
+                        READING
                       </span>
                     )}
                   </div>

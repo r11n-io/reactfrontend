@@ -3,7 +3,10 @@ import "katex/dist/katex.min.css";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   HiArrowDown,
+  HiArrowLeft,
   HiArrowUp,
+  HiCalendar,
+  HiClock,
   HiOutlinePencil,
   HiOutlineTrash,
 } from "react-icons/hi";
@@ -188,19 +191,20 @@ const PostDetailPage: React.FC = () => {
             <main className="min-w-0 flex-1">
               <div className="max-w-[970px]">
                 <Button
-                  color="light"
                   size="sm"
-                  className="mb-4"
+                  className="!text-secondary-text hover:!text-primary-text hover:!bg-secondary-text/10 group mb-6 border-none !bg-transparent transition-all duration-300"
                   onClick={handleGoback}
                 >
-                  이전 화면으로
+                  <HiArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  <span className="font-medium">이전 화면으로</span>
                 </Button>
+
                 {/* 포스트 제목 및 메타데이터 영역 */}
-                <header className="mb-6 rounded-lg bg-gray-200 p-4 pb-4 dark:bg-gray-800">
+                <header className="bg-surface border-secondary-text/5 mb-10 rounded-2xl border p-6 shadow-sm">
                   <div className="mb-2 flex flex-wrap gap-2">
                     <Badge
                       color="info"
-                      className="mr-2 px-3 py-1 text-xs font-semibold uppercase"
+                      className="!bg-accent/40 !text-accent mr-2 px-3 py-1 text-xs font-semibold uppercase"
                     >
                       {post.category}
                     </Badge>
@@ -214,11 +218,22 @@ const PostDetailPage: React.FC = () => {
                       </Badge>
                     ))}
                   </div>
-                  <h1 className="mb-2 text-2xl font-bold">{post.title}</h1>
-                  <div className="mt-2 flex items-center text-sm text-gray-400 dark:text-gray-500">
-                    <span>{new Date(post.createAt).toLocaleDateString()}</span>
-                    <span className="mx-2">|</span>
-                    <span>{`${formatTimeAgo(post.createAt)}`}</span>
+                  <h1 className="text-primary-text mb-4 text-2xl leading-tight font-black tracking-tight sm:text-4xl">
+                    {post.title}
+                  </h1>
+
+                  <div className="text-secondary-text/60 border-secondary-text/5 mt-4 flex items-center gap-3 border-t pt-4 text-sm">
+                    <div className="flex items-center gap-1">
+                      <HiCalendar className="h-4 w-4 opacity-70" />
+                      <span>
+                        {new Date(post.createAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <span className="text-secondary-text/20">•</span>
+                    <div className="flex items-center gap-1">
+                      <HiClock className="h-4 w-4 opacity-70" />
+                      <span>{`${formatTimeAgo(post.createAt)}`}</span>
+                    </div>
                   </div>
                 </header>
 
@@ -267,12 +282,12 @@ const PostDetailPage: React.FC = () => {
 
                 <footer className="mt-4 border-t border-gray-300 p-4 dark:border-gray-700">
                   <Button
-                    color="light"
                     size="sm"
-                    className="mb-4"
+                    className="!text-secondary-text hover:!text-primary-text hover:!bg-secondary-text/10 group mb-6 border-none !bg-transparent transition-all duration-300"
                     onClick={handleGoback}
                   >
-                    이전 화면으로
+                    <HiArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                    <span className="font-medium">이전 화면으로</span>
                   </Button>
                 </footer>
               </div>
@@ -287,40 +302,59 @@ const PostDetailPage: React.FC = () => {
               >
                 <div className="space-y-6">
                   {/* 게시글 관리 영역 */}
-                  {isAuthenticated ? (
-                    <Card>
-                      <h6 className="text-lg font-bold tracking-normal text-gray-900 dark:text-white">
-                        게시글 관리
-                      </h6>
+                  {isAuthenticated && (
+                    <Card className="!bg-surface !border-secondary-text/10 overflow-hidden shadow-sm">
+                      <div className="border-secondary-text/5 flex items-center gap-2 border-b pb-3">
+                        <div className="bg-accent h-4 w-1 rounded-full" />
+                        <h6 className="text-primary-text font-bold tracking-tight">
+                          게시글 관리
+                        </h6>
+                      </div>
+
                       <div className="flex flex-row gap-2">
-                        <Button color="blue" size="sm" onClick={handleModify}>
-                          <HiOutlinePencil className="mr-2 h-5 w-5" />
-                          수정
+                        <Button
+                          size="sm"
+                          onClick={handleModify}
+                          className="!bg-accent/10 !text-accent hover:!bg-accent hover:shadow-accent/20 flex-1 border-none shadow-none transition-all duration-300 hover:!text-white hover:shadow-lg"
+                        >
+                          <HiOutlinePencil className="mr-2 h-4 w-4" />
+                          <span className="text-sm font-semibold">수정</span>
                         </Button>
-                        <Button color="red" size="sm" onClick={handleDelete}>
-                          <HiOutlineTrash className="mr-2 h-5 w-5" />
-                          삭제
+
+                        <Button
+                          size="sm"
+                          onClick={handleDelete}
+                          className="flex-1 border-none !bg-red-500/5 !text-red-500 transition-all duration-300 hover:!bg-red-500 hover:!text-white"
+                        >
+                          <HiOutlineTrash className="mr-2 h-4 w-4" />
+                          <span className="font-semibold">삭제</span>
                         </Button>
                       </div>
                     </Card>
-                  ) : null}
+                  )}
 
                   {/* 목차 영역 */}
                   {toc.length != 0 && (
-                    <Card>
-                      <h3 className="mb-3 text-lg font-semibold">목차</h3>
-                      <ul className="mt-2 space-y-2">
+                    <Card className="!bg-surface !border-secondary-text/10 top-6 shadow-sm">
+                      <div className="border-secondary-text/5 mb-4 flex items-center gap-2 border-b pb-2">
+                        <div className="bg-accent h-4 w-1 rounded-full" />
+                        <h3 className="text-primary-text font-bold tracking-tight uppercase">
+                          목차
+                        </h3>
+                      </div>
+
+                      <ul className="mt-2 space-y-1">
                         {toc.map((item) => {
                           const getStyleByLevel = (level: number) => {
                             switch (level) {
                               case 2:
-                                return "text-[0.95rem] font-bold ml-0";
+                                return "text-primary-text font-bold ml-0 py-1";
                               case 3:
-                                return "text-[0.85rem] font-medium ml-3";
+                                return "text-secondary-text font-medium ml-3 text-[0.85rem] py-0.5";
                               case 4:
-                                return "text-[0.8rem] text-gray-500 ml-6";
+                                return "text-secondary-text/70 ml-6 text-[0.8rem] py-0.5";
                               default:
-                                return "text-[0.75rem] text-gray-400 ml-9";
+                                return "text-secondary-text/50 ml-9 text-[0.75rem] py-0.5";
                             }
                           };
 
@@ -328,24 +362,37 @@ const PostDetailPage: React.FC = () => {
                             <li key={item.id} className="leading-tight">
                               <a
                                 href={`#${item.id}`}
-                                className={`${getStyleByLevel(item.level)} block transition-colors hover:text-blue-600 hover:underline dark:hover:text-blue-400`}
+                                className={` ${getStyleByLevel(item.level)} hover:text-accent group relative block transition-all duration-200 hover:pl-2`}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   const target = document.getElementById(
                                     item.id,
                                   );
                                   if (target) {
-                                    target.scrollIntoView({
+                                    const headerOffset = 80;
+                                    const elementPosition =
+                                      target.getBoundingClientRect().top;
+                                    const offsetPosition =
+                                      elementPosition +
+                                      window.pageYOffset -
+                                      headerOffset;
+
+                                    window.scrollTo({
+                                      top: offsetPosition,
                                       behavior: "smooth",
-                                      block: "start",
                                     });
                                   }
                                 }}
                               >
-                                <span className="mr-1.5 font-mono text-[0.8em] opacity-70">
+                                <div className="bg-accent absolute top-1/2 left-[-8px] h-0 w-[2px] -translate-y-1/2 transition-all duration-300 group-hover:h-3/4" />
+
+                                <span className="mr-2 inline-block w-4 text-center font-mono text-[0.75em] opacity-40">
                                   {item.depth}
                                 </span>
-                                {item.text}
+
+                                <span className="decoration-accent/30 underline-offset-4 hover:underline">
+                                  {item.text}
+                                </span>
                               </a>
                             </li>
                           );

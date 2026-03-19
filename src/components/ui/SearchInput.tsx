@@ -42,11 +42,23 @@ const SearchInput: React.FC = () => {
           type="text"
           placeholder="검색.."
           required
-          className="pr-10"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          rightIcon={HiSearch}
           ref={inputRef}
+          theme={{
+            field: {
+              input: {
+                base: "!border-secondary-text/20 !bg-surface !text-primary-text block w-full border disabled:cursor-not-allowed disabled:opacity-50",
+                colors: {
+                  gray: "focus:!border-accent focus:!ring-accent/30",
+                },
+              },
+            },
+          }}
+          className="transition-all duration-300"
+          rightIcon={() => (
+            <HiSearch className="text-secondary-text group-focus-within:text-accent h-5 w-5 transition-colors" />
+          )}
         />
       </div>
     </form>

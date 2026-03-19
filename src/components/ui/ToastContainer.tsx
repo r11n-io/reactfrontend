@@ -37,19 +37,42 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   }, [messages, onClose]);
 
   return (
-    <div className="fixed right-4 bottom-4 z-[1000]">
+    <div className="fixed right-6 bottom-6 z-[1000] flex flex-col gap-3">
       {messages.map((toast) => {
-        const { icon: Icon, color } = statusIcon[toast.status];
+        const { icon: Icon } = statusIcon[toast.status];
+
+        const statusColors = {
+          success: "text-green-500 bg-green-500/10",
+          error: "text-red-500 bg-red-500/10",
+          warning: "text-yellow-500 bg-yellow-500/10",
+          info: "text-accent bg-accent/10",
+        };
 
         return (
-          <Toast key={toast.id} className="mb-2">
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-${color}-100 text-${color}-500 dark:bg-${color}-800 dark:text-${color}-200`}
-            >
-              <Icon className="h-5 w-5" />
+          <Toast
+            key={toast.id}
+            className="!bg-surface !text-primary-text border-secondary-text/10 animate-slide-in border shadow-2xl"
+          >
+            <div className="flex w-full items-center pl-2">
+              <div
+                className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${statusColors[toast.status] || statusColors.info}`}
+              >
+                <Icon className="h-5 w-5" />
+              </div>
+
+              <div className="ml-4 text-sm leading-tight font-medium">
+                {toast.message}
+              </div>
+
+              <ToastToggle
+                className="!text-secondary-text hover:!text-primary-text !bg-transparent transition-colors"
+                onClick={() => onClose(toast.id)}
+              />
             </div>
-            <div className="ml-3 text-sm font-normal">{toast.message}</div>
-            <ToastToggle onClick={() => onClose(toast.id)} />
+
+            <div
+              className={`absolute bottom-0 left-0 h-1 w-full ${statusColors[toast.status].split(" ")[0].replace("text", "bg")}`}
+            />
           </Toast>
         );
       })}

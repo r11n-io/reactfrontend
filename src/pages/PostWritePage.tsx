@@ -9,6 +9,7 @@ import {
   ToggleSwitch,
 } from "flowbite-react";
 import React, { useEffect, useMemo, useState, type FormEvent } from "react";
+import { HiOutlineCheck } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleMdeEditor from "react-simplemde-editor";
 import { uploadImage } from "../api/ImageApi";
@@ -16,6 +17,28 @@ import { createPost, getPost, updatePost } from "../api/PostApi";
 import { getAllSeries } from "../api/SeriesApi";
 import type { SeriesResponse } from "../types/Series";
 import { handleError, handleSuccess } from "../utils/notifier";
+
+const customInputTheme = {
+  field: {
+    input: {
+      base: "!bg-main/50 !text-primary-text !border-secondary-text/20 block w-full border disabled:cursor-not-allowed disabled:opacity-50 rounded-lg transition-all",
+      colors: {
+        gray: "focus:!border-accent focus:!ring-accent/30",
+      },
+    },
+  },
+};
+
+const customSelectTheme = {
+  field: {
+    select: {
+      base: "block w-full transition-all duration-200",
+      colors: {
+        gray: "!bg-surface !text-primary-text border-2 !border-secondary-text/20 focus:!border-accent focus:!ring-4 focus:!ring-accent/10 rounded-xl py-2.5",
+      },
+    },
+  },
+};
 
 /**
  * 게시글 작성/수정 페이지 컴포넌트
@@ -171,14 +194,21 @@ const PostWritePage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-        새 글 작성
-      </h1>
+      <header className="border-secondary-text/10 mb-6 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-end">
+        <h1 className="text-primary-text text-4xl font-black tracking-tighter">
+          새 글 작성
+        </h1>
+      </header>
 
-      <Card className="mb-4 p-2">
+      <Card className="!bg-surface !border-secondary-text/10 top-6 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-24 shrink-0">
-            <Label htmlFor="title">제목</Label>
+            <Label
+              htmlFor="title"
+              className="text-secondary-text text-sm font-medium"
+            >
+              제목
+            </Label>
           </div>
           <div className="flex-1">
             <TextInput
@@ -188,6 +218,7 @@ const PostWritePage: React.FC = () => {
               value={title}
               onChange={handleTitleChange}
               required
+              theme={customInputTheme}
             />
           </div>
         </div>
@@ -195,7 +226,12 @@ const PostWritePage: React.FC = () => {
         <div className="grid grid-cols-2 gap-6">
           <div className="flex items-center gap-4">
             <div className="w-24 shrink-0">
-              <Label htmlFor="category">카테고리</Label>
+              <Label
+                htmlFor="category"
+                className="text-secondary-text text-sm font-medium"
+              >
+                카테고리
+              </Label>
             </div>
             <div className="flex-1">
               <Select
@@ -203,6 +239,7 @@ const PostWritePage: React.FC = () => {
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                theme={customSelectTheme}
               >
                 <option>개발</option>
                 <option>외국어</option>
@@ -214,7 +251,12 @@ const PostWritePage: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-24 shrink-0">
-              <Label htmlFor="isPrivate">비밀글 여부</Label>
+              <Label
+                htmlFor="isPrivate"
+                className="text-secondary-text text-sm font-medium"
+              >
+                비밀글 여부
+              </Label>
             </div>
             <div className="flex flex-1 items-center">
               <ToggleSwitch
@@ -222,6 +264,24 @@ const PostWritePage: React.FC = () => {
                 checked={isPrivate}
                 onChange={setIsPrivate}
                 label={isPrivate ? "비밀글 (Private)" : "공개글 (Public)"}
+                theme={{
+                  root: {
+                    base: "flex items-center gap-3 cursor-pointer group",
+                    active: {
+                      on: "cursor-pointer",
+                      off: "cursor-pointer",
+                    },
+                    label:
+                      "text-sm font-bold text-secondary-text group-hover:text-primary-text transition-colors",
+                  },
+                  toggle: {
+                    base: "relative rounded-full border border-secondary-text/20 transition-all duration-300",
+                    checked: {
+                      on: "!bg-accent !border-accent shadow-sm shadow-accent/20",
+                      off: "!bg-secondary-text/10 !border-secondary-text/10",
+                    },
+                  },
+                }}
               />
             </div>
           </div>
@@ -230,13 +290,19 @@ const PostWritePage: React.FC = () => {
         <div className="grid grid-cols-2 gap-6">
           <div className="flex items-center gap-4">
             <div className="w-24 shrink-0">
-              <Label htmlFor="series-select">시리즈</Label>
+              <Label
+                htmlFor="series-select"
+                className="text-secondary-text text-sm font-medium"
+              >
+                시리즈
+              </Label>
             </div>
             <div className="flex-1">
               <Select
                 id="series-select"
                 onChange={(e) => setSeriesId(Number(e.target.value))}
                 required={false}
+                theme={customSelectTheme}
               >
                 <option value="">-- 선택 안 함 --</option>
                 {allSeries.map((series) => (
@@ -249,7 +315,12 @@ const PostWritePage: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-24 shrink-0">
-              <Label htmlFor="series-order">시리즈 순서</Label>
+              <Label
+                htmlFor="series-order"
+                className="text-secondary-text text-sm font-medium"
+              >
+                시리즈 순서
+              </Label>
             </div>
             <TextInput
               id="series-order"
@@ -259,13 +330,19 @@ const PostWritePage: React.FC = () => {
               value={seriesOrder ?? ""}
               onChange={(e) => setSeriesOrder(Number(e.target.value))}
               disabled={seriesId === null}
+              theme={customInputTheme}
             />
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="w-30 shrink-0">
-            <Label htmlFor="tags">태그 (쉼표로 구분)</Label>
+            <Label
+              htmlFor="tags"
+              className="text-secondary-text text-sm font-medium"
+            >
+              태그 (쉼표로 구분)
+            </Label>
           </div>
           <div className="flex-1">
             <TextInput
@@ -274,6 +351,7 @@ const PostWritePage: React.FC = () => {
               placeholder="예: Spring Boot, JWT, 성능 최적화"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
+              theme={customInputTheme}
             />
           </div>
         </div>
@@ -281,40 +359,37 @@ const PostWritePage: React.FC = () => {
         <div>
           <div className="mb-2 block">
             <div className="mb-3">
-              <Label htmlFor="content">본문 내용 (Markdown)</Label>
+              <Label
+                htmlFor="content"
+                className="text-secondary-text text-sm font-medium"
+              >
+                본문 내용 (Markdown)
+              </Label>
             </div>
             <SimpleMdeEditor
               value={content}
               onChange={handleContentChange}
               options={mdeOptions}
               className="markdown-editor-simplemde"
-              // getMdeInstance={(instance) => {
-              //   const cm = instance?.codemirror as Editor | undefined;
-              //   if (!cm) return;
-              //   const internalCm = cm as Editor & { isOverlayAdded?: boolean };
-
-              //   if (internalCm.isOverlayAdded) return;
-
-              //   internalCm.addOverlay({
-              //     token: (stream: StringStream): string | null => {
-              //       if (stream.next() === " ") return "custom-space";
-              //       return null;
-              //     },
-              //   });
-
-              //   internalCm.isOverlayAdded = true;
-              // }}
             />
           </div>
         </div>
       </Card>
 
-      <div className="flex justify-end gap-2">
-        <Button onClick={handleCancel} color="alternative">
-          취소
+      <div className="border-secondary-text/5 mt-3 flex justify-end gap-3 border-t">
+        <Button
+          onClick={handleCancel}
+          className="!text-secondary-text hover:!bg-secondary-text/5 !border-secondary-text/20 !bg-transparent transition-all duration-200"
+        >
+          <span className="font-medium">취소</span>
         </Button>
-        <Button onClick={handleSubmit} color="cyan">
-          등록
+
+        <Button
+          onClick={handleSubmit}
+          className="!bg-accent hover:!bg-accent/90 shadow-accent/20 border-none px-6 !text-white shadow-lg transition-all duration-300"
+        >
+          <HiOutlineCheck className="mr-2 h-5 w-5" />
+          <span className="font-bold">등록</span>
         </Button>
       </div>
     </div>
