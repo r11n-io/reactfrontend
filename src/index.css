@@ -212,18 +212,32 @@ h6 {
 }
 
 /* 마크다운 상세 스타일 */
+.prose {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .prose img {
   display: block;
-  max-height: 800px;
-  max-width: 100%;
-  width: auto;
-  height: auto;
-  margin: 20px auto;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
+  margin: 20px 0;
   border-radius: 8px;
-  box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  clear: both;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.prose p {
+  width: 100%;
+  display: block;
+}
+
+.prose p:has(img) {
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .prose table {

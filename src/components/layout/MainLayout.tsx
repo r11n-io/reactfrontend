@@ -4,7 +4,6 @@ import {
   DropdownHeader,
   DropdownItem,
   Footer,
-  FooterCopyright,
   FooterIcon,
   Navbar,
   NavbarBrand,
@@ -48,52 +47,32 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* 상단 헤더 */}
       <header className="border-secondary-text/10 fixed top-0 z-10 w-full border-b">
         <Navbar fluid className="!bg-surface">
-          <div className="flex items-center gap-4">
-            {/* 제목/로고 영역 */}
+          <div className="flex items-center gap-3">
             <Link to="/">
               <NavbarBrand as="div" className="gap-2">
                 <HiHome className="text-accent h-6 w-6" />
-                <span className="self-center text-xl font-semibold whitespace-nowrap">
+                <span className="self-center text-xl font-black tracking-tighter whitespace-nowrap">
                   r11n.io
                 </span>
               </NavbarBrand>
             </Link>
-            {/* 다크모드 토글 */}
             <DarkThemeToggle />
-            {/* 검색 */}
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <SearchInput />
             </div>
           </div>
 
-          <div className="flex items-center gap-8 md:order-2">
-            {/* 메뉴 */}
-            <NavbarCollapse>
-              <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-4">
-                <Link
-                  to="/posts"
-                  className="border-secondary-text/20 pr-4 md:border-r"
-                >
-                  <NavbarLink as="div" className="!text-primary-text font-bold">
-                    게시판
-                  </NavbarLink>
-                </Link>
-                <Link to="/about">
-                  <NavbarLink as="div" className="!text-primary-text font-bold">
-                    소개
-                  </NavbarLink>
-                </Link>
-              </div>
-            </NavbarCollapse>
-
-            {/* 인증 드롭다운 */}
+          {/* 우측 액션 영역 */}
+          <div className="flex items-center gap-2 md:order-2">
             <Dropdown
-              className="bg-main"
-              label={<HiUserCircle className="text-primary-text h-6 w-6" />}
               arrowIcon={false}
               inline
+              label={
+                <HiUserCircle className="text-primary-text h-7 w-7 transition-transform hover:scale-110" />
+              }
             >
-              <div className="bg-main text-primary-text border-secondary-text/10 border shadow-xl">
+              <div className="bg-main text-primary-text border-secondary-text/10 w-48 border shadow-2xl">
+                {/* 인증 드롭다운 */}
                 {isAuthenticated ? (
                   <>
                     <DropdownHeader className="border-secondary-text/10 border-b">
@@ -132,9 +111,40 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 </DropdownItem>
               </div>
             </Dropdown>
-            {/* 모바일 메뉴 토글 */}
-            <NavbarToggle />
+
+            {/* 모바일 토글 버튼: 디자인 커스텀이 필요할 수 있음 */}
+            <NavbarToggle className="hover:bg-main/50" />
           </div>
+
+          {/* 메뉴 리스트 영역 */}
+          <NavbarCollapse className="bg-surface border-secondary-text/10 absolute top-full left-0 w-full border-b md:static md:ml-auto md:w-auto md:border-none md:bg-transparent">
+            <div className="mr-6 flex flex-col p-4 md:flex-row md:items-center md:justify-end md:gap-8 md:p-0">
+              <Link to="/posts" className="group">
+                <NavbarLink
+                  as="div"
+                  className="!text-primary-text hover:bg-accent/10 flex items-center justify-between rounded-lg px-4 py-3 font-bold md:px-0 md:py-0 md:hover:bg-transparent"
+                >
+                  <span>게시판</span>
+                  <span className="text-accent block text-xs md:hidden">
+                    Posts →
+                  </span>
+                </NavbarLink>
+              </Link>
+              <div className="bg-secondary-text/10 h-[1px] w-full md:hidden" />
+              {/* 모바일 구분선 */}
+              <Link to="/about" className="group">
+                <NavbarLink
+                  as="div"
+                  className="!text-primary-text hover:bg-accent/10 flex items-center justify-between rounded-lg px-4 py-3 font-bold md:px-0 md:py-0 md:hover:bg-transparent"
+                >
+                  <span>소개</span>
+                  <span className="text-accent block text-xs md:hidden">
+                    About →
+                  </span>
+                </NavbarLink>
+              </Link>
+            </div>
+          </NavbarCollapse>
         </Navbar>
       </header>
 
@@ -149,23 +159,26 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         className="!bg-surface border-secondary-text/10 w-full rounded-none border-t !shadow-none"
       >
         <div className="w-full text-center">
-          <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
-            <FooterCopyright
-              href="#"
-              by="Learning & Writing BY r11n"
-              year={2025}
-              className="text-secondary-text"
-            />
-            <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
+          <div className="flex w-full flex-row items-center justify-between">
+            {/* 1. 왼쪽 그룹: 카피라이트 문구 전체 */}
+            <div className="text-secondary-text flex items-center gap-1 text-xs sm:text-sm">
+              <span>© 2025</span>
+              {/* PC에서만 보이는 문구 */}
+              <span className="hidden sm:inline">Learning & Writing BY</span>
+              {/* 항상 보이는 이름 */}
+              <span className="font-bold">r11n</span>
+            </div>
+
+            <div className="flex space-x-5">
               <FooterIcon
                 href="mailto:thearch90@gmail.com"
                 icon={FaEnvelope}
-                className="text-secondary-text hover:text-accent"
+                className="text-secondary-text hover:text-accent !m-0"
               />
               <FooterIcon
                 href="https://github.com/r11n-io"
                 icon={FaGithub}
-                className="text-secondary-text hover:text-accent"
+                className="text-secondary-text hover:text-accent !m-0"
               />
             </div>
           </div>

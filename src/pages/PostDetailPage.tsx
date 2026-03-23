@@ -183,104 +183,14 @@ const PostDetailPage: React.FC = () => {
     <div className="relative">
       <div
         ref={mainContentRef}
-        className="mx-auto max-w-[1440px] px-6 lg:px-12"
+        className="mx-auto max-w-[1440px] min-w-0 px-4 sm:px-6 xl:px-12"
       >
         {post ? (
           // 게시글 정상 조회 시 렌더링
-          <div className="flex flex-col items-start gap-8 lg:flex-row">
-            <main className="min-w-0 flex-1">
-              <div className="max-w-[970px]">
-                <Button
-                  size="sm"
-                  className="!text-secondary-text hover:!text-primary-text hover:!bg-secondary-text/10 group mb-6 border-none !bg-transparent transition-all duration-300"
-                  onClick={handleGoback}
-                >
-                  <HiArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                  <span className="font-medium">이전 화면으로</span>
-                </Button>
-
-                {/* 포스트 제목 및 메타데이터 영역 */}
-                <header className="bg-surface border-secondary-text/5 mb-10 rounded-2xl border p-6 shadow-sm">
-                  <div className="mb-2 flex flex-wrap gap-2">
-                    <Badge
-                      color="info"
-                      className="!bg-accent/40 !text-accent mr-2 px-3 py-1 text-xs font-semibold uppercase"
-                    >
-                      {post.category}
-                    </Badge>
-                    {post.tags.map((tag) => (
-                      <Badge
-                        color="blue"
-                        className="bg-accent hover:!bg-accent/80 text-tag-text rounded-md px-2 py-1 text-xs font-medium"
-                        key={tag}
-                      >
-                        #{tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <h1 className="text-primary-text mb-4 text-2xl leading-tight font-black tracking-tight sm:text-4xl">
-                    {post.title}
-                  </h1>
-
-                  <div className="text-secondary-text/60 border-secondary-text/5 mt-4 flex items-center gap-3 border-t pt-4 text-sm">
-                    <div className="flex items-center gap-1">
-                      <HiCalendar className="h-4 w-4 opacity-70" />
-                      <span>
-                        {new Date(post.createAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <span className="text-secondary-text/20">•</span>
-                    <div className="flex items-center gap-1">
-                      <HiClock className="h-4 w-4 opacity-70" />
-                      <span>{`${formatTimeAgo(post.createAt)}`}</span>
-                    </div>
-                  </div>
-                </header>
-
-                {/* 마크다운 콘텐츠 영역 */}
-                <div className="prose dark:prose-invert prose-lg max-w-none p-4">
-                  <ReactMarkdown
-                    children={post.content}
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    rehypePlugins={[
-                      rehypeSlug,
-                      [rehypeAutolinkHeadings, { behavior: "wrap" }],
-                      [rehypeKatex],
-                    ]}
-                    components={{
-                      code({ className, children, ...props }) {
-                        const match = /language-(\w+)/.exec(className || "");
-                        const isCodeBlock = !!match;
-
-                        return isCodeBlock ? (
-                          <SyntaxHighlighter
-                            language={match[1]}
-                            style={vscDarkPlus}
-                            PreTag="div"
-                            customStyle={{
-                              fontSize: "1rem",
-                              lineHeight: "1.5",
-                              borderRadius: "0.5rem",
-                              margin: "1.5rem 0",
-                              backgroundColor: "#1e1e1e",
-                            }}
-                          >
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
-                        ) : (
-                          <code
-                            className="rounded bg-gray-200 px-1.5 py-0.5 text-sm font-semibold text-red-500 dark:bg-gray-700 dark:text-red-400"
-                            {...props}
-                          >
-                            {children}
-                          </code>
-                        );
-                      },
-                    }}
-                  />
-                </div>
-
-                <footer className="mt-4 border-t border-gray-300 p-4 dark:border-gray-700">
+          <div className="flex min-w-0 flex-col items-start gap-8 lg:flex-row">
+            <main className="w-full min-w-0 flex-1">
+              <div className="w-full max-w-full overflow-hidden lg:max-w-[970px]">
+                <article className="w-full min-w-0 overflow-x-hidden break-words">
                   <Button
                     size="sm"
                     className="!text-secondary-text hover:!text-primary-text hover:!bg-secondary-text/10 group mb-6 border-none !bg-transparent transition-all duration-300"
@@ -289,11 +199,103 @@ const PostDetailPage: React.FC = () => {
                     <HiArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
                     <span className="font-medium">이전 화면으로</span>
                   </Button>
-                </footer>
+
+                  {/* 포스트 제목 및 메타데이터 영역 */}
+                  <header className="bg-surface border-secondary-text/5 mb-10 rounded-2xl border p-6 shadow-sm">
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      <Badge
+                        color="info"
+                        className="!bg-accent/40 !text-accent mr-2 px-3 py-1 text-xs font-semibold uppercase"
+                      >
+                        {post.category}
+                      </Badge>
+                      {post.tags.map((tag) => (
+                        <Badge
+                          color="blue"
+                          className="bg-accent hover:!bg-accent/80 text-tag-text rounded-md px-2 py-1 text-xs font-medium"
+                          key={tag}
+                        >
+                          #{tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    <h1 className="text-primary-text mb-4 text-2xl leading-tight font-black tracking-tight sm:text-4xl">
+                      {post.title}
+                    </h1>
+
+                    <div className="text-secondary-text/60 border-secondary-text/5 mt-4 flex items-center gap-3 border-t pt-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <HiCalendar className="h-4 w-4 opacity-70" />
+                        <span>
+                          {new Date(post.createAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <span className="text-secondary-text/20">•</span>
+                      <div className="flex items-center gap-1">
+                        <HiClock className="h-4 w-4 opacity-70" />
+                        <span>{`${formatTimeAgo(post.createAt)}`}</span>
+                      </div>
+                    </div>
+                  </header>
+
+                  {/* 마크다운 콘텐츠 영역 */}
+                  <div className="prose dark:prose-invert prose-lg max-w-none p-4">
+                    <ReactMarkdown
+                      children={post.content}
+                      remarkPlugins={[remarkGfm, remarkMath]}
+                      rehypePlugins={[
+                        rehypeSlug,
+                        [rehypeAutolinkHeadings, { behavior: "wrap" }],
+                        [rehypeKatex],
+                      ]}
+                      components={{
+                        code({ className, children, ...props }) {
+                          const match = /language-(\w+)/.exec(className || "");
+                          const isCodeBlock = !!match;
+
+                          return isCodeBlock ? (
+                            <SyntaxHighlighter
+                              language={match[1]}
+                              style={vscDarkPlus}
+                              PreTag="div"
+                              customStyle={{
+                                fontSize: "1rem",
+                                lineHeight: "1.5",
+                                borderRadius: "0.5rem",
+                                margin: "1.5rem 0",
+                                backgroundColor: "#1e1e1e",
+                              }}
+                            >
+                              {String(children).replace(/\n$/, "")}
+                            </SyntaxHighlighter>
+                          ) : (
+                            <code
+                              className="rounded bg-gray-200 px-1.5 py-0.5 text-sm font-semibold text-red-500 dark:bg-gray-700 dark:text-red-400"
+                              {...props}
+                            >
+                              {children}
+                            </code>
+                          );
+                        },
+                      }}
+                    />
+                  </div>
+
+                  <footer className="mt-4 border-t border-gray-300 p-4 dark:border-gray-700">
+                    <Button
+                      size="sm"
+                      className="!text-secondary-text hover:!text-primary-text hover:!bg-secondary-text/10 group mb-6 border-none !bg-transparent transition-all duration-300"
+                      onClick={handleGoback}
+                    >
+                      <HiArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                      <span className="font-medium">이전 화면으로</span>
+                    </Button>
+                  </footer>
+                </article>
               </div>
             </main>
 
-            <aside className="sticky top-24 hidden w-[350px] shrink-0 lg:block">
+            <aside className="sticky top-24 hidden w-[350px] shrink-0 xl:block">
               <div
                 className="custom-scrollbar overflow-y-auto pr-2"
                 style={{
@@ -386,11 +388,11 @@ const PostDetailPage: React.FC = () => {
                               >
                                 <div className="bg-accent absolute top-1/2 left-[-8px] h-0 w-[2px] -translate-y-1/2 transition-all duration-300 group-hover:h-3/4" />
 
-                                <span className="mr-2 inline-block w-4 text-center font-mono text-[0.75em] opacity-40">
+                                <span className="mr-3 inline-block w-4 text-center font-mono text-[0.75em] opacity-40">
                                   {item.depth}
                                 </span>
 
-                                <span className="decoration-accent/30 underline-offset-4 hover:underline">
+                                <span className="decoration-accent/30 break-words underline-offset-4 hover:underline">
                                   {item.text}
                                 </span>
                               </a>

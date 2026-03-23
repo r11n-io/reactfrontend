@@ -107,7 +107,7 @@ const PostListPage: React.FC = () => {
               {currentTitle}
             </h2>
             {isAuthenticated && (
-              <div className="flex gap-2">
+              <div className="hidden gap-2 xl:flex">
                 <Button
                   onClick={handleOpenModal}
                   className="!bg-secondary-text/5 !text-secondary-text hover:!bg-secondary-text/10 border-none transition-all"
@@ -160,7 +160,9 @@ const PostListPage: React.FC = () => {
         {/* 우측 카드 영역 */}
         <aside className="flex flex-col gap-4 md:col-span-1">
           <TagCard tags={allTags} />
-          <CategoryCard />
+          <div className="hidden xl:block">
+            <CategoryCard />
+          </div>
         </aside>
       </div>
     </div>

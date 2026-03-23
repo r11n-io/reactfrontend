@@ -45,9 +45,9 @@ const TechBadge: React.FC<TechBadgeProps> = ({ icon, label }) => (
  */
 const AboutPage: React.FC = () => {
   return (
-    <div className="grid gap-6 overflow-hidden px-10 py-6 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-6 overflow-hidden px-6 py-4 xl:grid-cols-4">
       {/* 좌측 영역 */}
-      <div className="flex h-full flex-col items-center justify-between overflow-y-auto pr-2 lg:col-span-1 xl:col-span-1">
+      <div className="flex h-full flex-col items-center justify-between overflow-y-auto pr-2 xl:col-span-1">
         <div className="flex w-full flex-col items-center space-y-4">
           {/* 프로필 이미지 섹션 */}
           <section className="group relative mb-8">
@@ -117,7 +117,7 @@ const AboutPage: React.FC = () => {
       </div>
 
       {/* 중앙 영역 */}
-      <div className="h-full overflow-y-auto pr-2 lg:col-span-1 xl:col-span-1">
+      <div className="h-full overflow-y-auto pr-2 xl:col-span-1">
         <header className="mb-6 flex flex-col items-start gap-1">
           <span className="text-accent/60 text-[10px] font-black tracking-[0.2em] uppercase">
             Detailed Info
@@ -283,7 +283,7 @@ const AboutPage: React.FC = () => {
       </div>
 
       {/* 우측 영역 */}
-      <div className="h-full overflow-y-auto pr-2 lg:col-span-1 xl:col-span-2">
+      <div className="h-full overflow-y-auto pr-2 xl:col-span-2">
         <section className="w-full">
           <header className="mb-6 flex flex-col items-start gap-1">
             <span className="text-accent/60 text-[10px] font-black tracking-[0.2em] uppercase">
