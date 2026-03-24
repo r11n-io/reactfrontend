@@ -213,7 +213,7 @@ h6 {
 
 /* 마크다운 상세 스타일 */
 .prose {
-  word-break: break-word;
+  word-break: keep-all;
   overflow-wrap: break-word;
   max-width: 100%;
   box-sizing: border-box;

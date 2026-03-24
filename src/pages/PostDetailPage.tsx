@@ -268,16 +268,24 @@ const PostDetailPage: React.FC = () => {
                               language={match[1]}
                               style={vscDarkPlus}
                               PreTag="div"
+                              codeTagProps={{
+                                style: {
+                                  padding: "0",
+                                  display: "inline",
+                                },
+                              }}
                               customStyle={{
-                                fontSize: "1rem",
-                                lineHeight: "1.5",
+                                fontSize: "0.9rem",
+                                lineHeight: "1.6",
                                 borderRadius: "0.5rem",
-                                margin: "1.5rem 0",
+                                margin: "1rem 0",
+                                padding: "1rem",
                                 backgroundColor: "#1e1e1e",
                                 maxWidth: "100%",
                                 width: "100%",
                                 overflowX: "auto",
                                 display: "block",
+                                border: "none",
                               }}
                             >
                               {String(children).replace(/\n$/, "")}
