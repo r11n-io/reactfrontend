@@ -183,13 +183,15 @@ const PostDetailPage: React.FC = () => {
     <div className="relative">
       <div
         ref={mainContentRef}
-        className="mx-auto max-w-[1440px] min-w-0 px-4 sm:px-6 xl:px-12"
+        className="mx-auto max-w-[1440px] px-4 sm:px-6 xl:px-12"
       >
         {post ? (
           // 게시글 정상 조회 시 렌더링
           <div className="flex min-w-0 flex-col items-start gap-8 lg:flex-row">
+            {/* 상세 본문 영역 */}
             <main className="w-full min-w-0 flex-1">
-              <div className="w-full max-w-full overflow-hidden lg:max-w-[970px]">
+              {/* 본문 2단 */}
+              <div className="w-full min-w-0 lg:mx-auto lg:max-w-[970px]">
                 <article className="w-full min-w-0 overflow-x-hidden break-words">
                   <Button
                     size="sm"
@@ -239,7 +241,15 @@ const PostDetailPage: React.FC = () => {
                   </header>
 
                   {/* 마크다운 콘텐츠 영역 */}
-                  <div className="prose dark:prose-invert prose-lg max-w-none p-4">
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "minmax(0, 1fr)",
+                      width: "100%",
+                      overflowX: "hidden",
+                    }}
+                    className="prose dark:prose-invert prose-lg w-full max-w-full min-w-0 overflow-x-hidden"
+                  >
                     <ReactMarkdown
                       children={post.content}
                       remarkPlugins={[remarkGfm, remarkMath]}
@@ -264,6 +274,10 @@ const PostDetailPage: React.FC = () => {
                                 borderRadius: "0.5rem",
                                 margin: "1.5rem 0",
                                 backgroundColor: "#1e1e1e",
+                                maxWidth: "100%",
+                                width: "100%",
+                                overflowX: "auto",
+                                display: "block",
                               }}
                             >
                               {String(children).replace(/\n$/, "")}
@@ -295,6 +309,7 @@ const PostDetailPage: React.FC = () => {
               </div>
             </main>
 
+            {/* 사이드바 영역 */}
             <aside className="sticky top-24 hidden w-[350px] shrink-0 xl:block">
               <div
                 className="custom-scrollbar overflow-y-auto pr-2"
