@@ -6,6 +6,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getPosts, getPostsCount } from "../api/PostApi";
 import { getTags } from "../api/TagApi";
 import CategoryCard from "../components/ui/CategoryCard";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import PostCard from "../components/ui/PostCard";
 import SeriesManageModal from "../components/ui/SeriesManageModal";
 import TagCard from "../components/ui/TagCard";
@@ -21,8 +22,8 @@ import { handleError } from "../utils/notifier";
  */
 const PostListPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const [posts, setPosts] = useState<PostListResponse[]>([]);
-  const [allTags, setAllTags] = useState<TagResponse[]>([]);
+  const [posts, setPosts] = useState<PostListResponse[] | undefined>(undefined);
+  const [allTags, setAllTags] = useState<TagResponse[] | undefined>(undefined);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -130,11 +131,20 @@ const PostListPage: React.FC = () => {
           <hr className="border-secondary-text/10 mb-8" />
 
           {/* 게시글 목록: 2열 그리드 */}
-          <div className="mb-2 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {posts.map((post: PostListResponse) => (
-              <PostCard key={post.postId} post={post} />
-            ))}
-          </div>
+
+          {!posts ? (
+            <LoadingSpinner size="lg" minHeight="80px" />
+          ) : posts.length === 0 ? (
+            <p className="text-secondary-text py-2 text-sm">
+              등록된 게시물이 없습니다.
+            </p>
+          ) : (
+            <div className="mb-2 grid grid-cols-1 gap-6 md:grid-cols-2">
+              {posts.map((post: PostListResponse) => (
+                <PostCard key={post.postId} post={post} />
+              ))}
+            </div>
+          )}
 
           {/* 페이징 컴포넌트 자리: flowbite 컴포넌트 바로 쓰기 */}
           <div className="flex justify-center overflow-x-auto">

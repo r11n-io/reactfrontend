@@ -1,9 +1,10 @@
 import { Badge, Card } from "flowbite-react";
 import { Link } from "react-router-dom";
 import type { TagResponse } from "../../types/Tag";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface TagCardProps {
-  tags: TagResponse[];
+  tags?: TagResponse[] | undefined;
 }
 
 /**
@@ -17,21 +18,30 @@ const TagCard: React.FC<TagCardProps> = ({ tags }) => (
     <h5 className="text-primary-text text-xl font-bold tracking-normal">
       해시태그
     </h5>
-    <div className="flex flex-wrap gap-2">
-      {tags.map((tag) => {
-        const params = new URLSearchParams();
-        params.set("tagName", tag.name);
-        const targetTo = `/posts?${params.toString()}`;
 
-        return (
-          <Link to={targetTo} key={tag.name}>
-            <Badge className="bg-accent hover:!bg-accent/80 text-tag-text rounded-lg px-3 py-1 font-medium transition-opacity hover:opacity-80">
-              #{tag.name}
-            </Badge>
-          </Link>
-        );
-      })}
-    </div>
+    {!tags ? (
+      <LoadingSpinner size="md" minHeight="80px" />
+    ) : tags.length === 0 ? (
+      <p className="text-secondary-text py-2 text-sm">
+        등록된 태그가 없습니다.
+      </p>
+    ) : (
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag) => {
+          const params = new URLSearchParams();
+          params.set("tagName", tag.name);
+          const targetTo = `/posts?${params.toString()}`;
+
+          return (
+            <Link to={targetTo} key={tag.name}>
+              <Badge className="bg-accent hover:!bg-accent/80 text-tag-text rounded-lg px-3 py-1 font-medium transition-opacity hover:opacity-80">
+                #{tag.name}
+              </Badge>
+            </Link>
+          );
+        })}
+      </div>
+    )}
   </Card>
 );
 

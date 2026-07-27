@@ -21,6 +21,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import { deletePost, getPost } from "../api/PostApi";
 import { getSeriesWithPosts } from "../api/SeriesApi";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import SeriesNavigator from "../components/ui/SeriesNavigator";
 import { useAuth } from "../hooks/useAuth";
 import type { PostDetailResponse } from "../types/Post";
@@ -440,7 +441,7 @@ const PostDetailPage: React.FC = () => {
             </aside>
           </div>
         ) : (
-          "조회 중.."
+          <LoadingSpinner size="lg" minHeight="80px" />
         )}
       </div>
 
