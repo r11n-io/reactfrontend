@@ -300,7 +300,10 @@ const PostWritePage: React.FC = () => {
             <div className="flex-1">
               <Select
                 id="series-select"
-                onChange={(e) => setSeriesId(Number(e.target.value))}
+                value={seriesId ?? ""}
+                onChange={(e) =>
+                  setSeriesId(e.target.value ? Number(e.target.value) : null)
+                }
                 required={false}
                 theme={customSelectTheme}
               >
