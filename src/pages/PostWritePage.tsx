@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Options } from "easymde";
 import "easymde/dist/easymde.min.css";
 import {
@@ -15,7 +16,7 @@ import SimpleMdeEditor from "react-simplemde-editor";
 import { uploadImage } from "../api/ImageApi";
 import { createPost, getPost, updatePost } from "../api/PostApi";
 import { getAllSeries } from "../api/SeriesApi";
-import type { SeriesResponse } from "../types/Series";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import { handleError, handleSuccess } from "../utils/notifier";
 
 const customInputTheme = {
@@ -58,43 +59,33 @@ const PostWritePage: React.FC = () => {
   const [isPrivate, setIsPrivate] = useState(false);
   const [seriesId, setSeriesId] = useState<number | null>(null);
   const [seriesOrder, setSeriesOrder] = useState<number | null>(null);
-  const [allSeries, setAllSeries] = useState<SeriesResponse[]>([]);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // 시리즈 목록 조회
+  const { data: allSeries = [] } = useQuery({
+    queryKey: ["series", "all"],
+    queryFn: getAllSeries,
+  });
+
+  // 수정 모드일 경우 기존 게시글 조회
+  const { data: existingPost, isLoading: isLoadingPost } = useQuery({
+    queryKey: ["post", postId ? Number(postId) : null],
+    queryFn: () => getPost(Number(postId)),
+    enabled: isEditMode,
+  });
 
   useEffect(() => {
-    // 시리즈 목록
-    const fetchAllSeries = async () => {
-      try {
-        const data = await getAllSeries();
-        setAllSeries(data);
-      } catch (err) {
-        handleError(err);
-      }
-    };
+    if (!existingPost) return;
 
-    fetchAllSeries();
-
-    // 수정 모드인지
-    if (isEditMode && postId) {
-      const fetchPost = async () => {
-        try {
-          const data = await getPost(Number(postId));
-
-          setTitle(data.title);
-          setContent(data.content);
-          setCategory(data.category);
-          setTags(data.tags.join(", "));
-          setIsPrivate(data.isPrivate);
-          setSeriesId(data.seriesId);
-          setSeriesOrder(data.seriesOrder);
-        } catch (error) {
-          handleError(error);
-        }
-      };
-
-      fetchPost();
-    }
-  }, [isEditMode, postId]);
+    setTitle(existingPost.title);
+    setContent(existingPost.content);
+    setCategory(existingPost.category);
+    setTags(existingPost.tags.join(", "));
+    setIsPrivate(existingPost.isPrivate);
+    setSeriesId(existingPost.seriesId);
+    setSeriesOrder(existingPost.seriesOrder);
+  }, [existingPost]);
 
   // 에디터 옵션
   const mdeOptions: Options = useMemo(() => {
@@ -153,35 +144,40 @@ const PostWritePage: React.FC = () => {
     setContent(value);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const submitMutation = useMutation({
+    mutationFn: () => {
+      const savePost = {
+        title,
+        content,
+        category,
+        isPrivate,
+        tags: tags.split(","),
+        seriesId,
+        seriesOrder,
+      };
 
-    // 게시글 서버 전송 로직
-    const savePost = {
-      title,
-      content,
-      category,
-      isPrivate,
-      tags: tags.split(","),
-      seriesId,
-      seriesOrder,
-    };
-
-    try {
-      let savedPost;
+      return isEditMode
+        ? updatePost(savePost, Number(postId))
+        : createPost(savePost);
+    },
+    onSuccess: (savedPost) => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
 
       if (isEditMode) {
-        savedPost = await updatePost(savePost, Number(postId));
-      } else {
-        savedPost = await createPost(savePost);
+        queryClient.invalidateQueries({ queryKey: ["post", Number(postId)] });
       }
 
       handleSuccess(`게시글 작성완료 [${savedPost.postId}]`, () =>
         navigate("/posts"),
       );
-    } catch (err) {
-      handleError(err);
-    }
+    },
+    onError: handleError,
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    submitMutation.mutate();
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,6 +187,10 @@ const PostWritePage: React.FC = () => {
   const handleCancel = () => {
     navigate("/posts");
   };
+
+  if (isEditMode && isLoadingPost) {
+    return <LoadingSpinner size="lg" minHeight="200px" />;
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
