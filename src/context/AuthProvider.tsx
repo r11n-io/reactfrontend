@@ -1,4 +1,7 @@
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerSessionExpiredHandler } from "../services/AuthEventService";
+import { showToast } from "../services/ToastService";
 import type { TokenResponse } from "../types/Auth";
 import { AuthContext } from "./AuthContextDefinition";
 
@@ -28,6 +31,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     setIsAuthenticated(false);
   }, []);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    registerSessionExpiredHandler(() => {
+      logout();
+      showToast("세션이 만료되었습니다. 다시 로그인해 주세요.", "error");
+      navigate("/login");
+    });
+  }, [logout, navigate]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
