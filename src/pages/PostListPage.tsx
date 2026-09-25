@@ -1,3 +1,4 @@
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Button, Pagination } from "flowbite-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { HiPencil } from "react-icons/hi";
@@ -12,8 +13,8 @@ import SeriesManageModal from "../components/ui/SeriesManageModal";
 import TagCard from "../components/ui/TagCard";
 import { useAuth } from "../hooks/useAuth";
 import type { PostListResponse, PostSearchCondition } from "../types/Post";
-import type { TagResponse } from "../types/Tag";
-import { handleError } from "../utils/notifier";
+
+const POSTS_PER_PAGE = 8;
 
 /**
  * 게시글 목록 페이지 컴포넌트
@@ -22,11 +23,8 @@ import { handleError } from "../utils/notifier";
  */
 const PostListPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const [posts, setPosts] = useState<PostListResponse[] | undefined>(undefined);
-  const [allTags, setAllTags] = useState<TagResponse[] | undefined>(undefined);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [searchParam] = useSearchParams();
   const [isSeriesModalOpen, setIsSeriesModalOpen] = useState(false);
 
@@ -38,60 +36,44 @@ const PostListPage: React.FC = () => {
     };
   }, [searchParam]);
 
-  // 제목 설정
-  const updateTitle = (condition: PostSearchCondition) => {
-    if (condition.tagName) {
-      setCurrentTitle(`#${condition.tagName} 태그 게시글`);
-    } else if (condition.category) {
-      setCurrentTitle(`${condition.category} 게시글`);
-    } else if (condition.keyword) {
-      setCurrentTitle(`'${condition.keyword}' 검색 결과`);
+  // 검색 조건이 바뀌면 1페이지로
+  useEffect(() => {
+    setCurrentPage(1);
+
+    // 게시판 구분 보여주기
+    if (currentCondition.tagName) {
+      setCurrentTitle(`#${currentCondition.tagName} 태그 게시글`);
+    } else if (currentCondition.category) {
+      setCurrentTitle(`${currentCondition.category} 게시글`);
+    } else if (currentCondition.keyword) {
+      setCurrentTitle(`'${currentCondition.keyword}' 검색 결과`);
     } else {
       setCurrentTitle("전체 게시글 목록");
     }
-  };
+  }, [currentCondition]);
 
   // 게시글 목록 조회
-  const fetchPosts = async (cPage: number, condition: PostSearchCondition) => {
-    try {
-      const data = await getPosts(cPage - 1, condition);
-
-      setPosts(data);
-    } catch (err) {
-      handleError(err);
-    }
-  };
+  const { data: posts } = useQuery({
+    queryKey: ["posts", currentCondition, currentPage],
+    queryFn: () => getPosts(currentPage - 1, currentCondition),
+    placeholderData: keepPreviousData,
+  });
 
   // 게시글 총 건수 조회
-  const fetchPostsCount = async (condition: PostSearchCondition) => {
-    try {
-      const count = await getPostsCount(condition);
+  const { data: totalCount } = useQuery({
+    queryKey: ["postsCount", currentCondition],
+    queryFn: () => getPostsCount(currentCondition),
+  });
+  const totalPages = totalCount ? Math.max(1, Math.ceil(totalCount / POSTS_PER_PAGE)) : 1;
 
-      setTotalPages(Math.max(1, Math.ceil(count / 8)));
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
-  // 1. 컴포넌트 마운트 초기 조회
-  useEffect(() => {
-    fetchPostsCount(currentCondition);
-    fetchPosts(1, currentCondition);
-
-    // 게시글 태그 목록 조회
-    const fetchAllTags = async () => {
-      const tags = await getTags();
-      setAllTags(tags);
-    };
-    fetchAllTags();
-
-    // 게시판 구분 보여주기
-    updateTitle(currentCondition);
-  }, [currentCondition]);
+  // 게시글 태그 목록 조회
+  const { data: allTags } = useQuery({
+    queryKey: ["tags"],
+    queryFn: getTags,
+  });
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
-    fetchPosts(page, currentCondition);
   };
 
   const handleOpenModal = () => setIsSeriesModalOpen(true);

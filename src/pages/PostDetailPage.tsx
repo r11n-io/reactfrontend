@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Badge, Button, Card } from "flowbite-react";
 import "katex/dist/katex.min.css";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -24,9 +25,7 @@ import { getSeriesWithPosts } from "../api/SeriesApi";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import SeriesNavigator from "../components/ui/SeriesNavigator";
 import { useAuth } from "../hooks/useAuth";
-import type { PostDetailResponse } from "../types/Post";
-import type { SeriesDetailResponse } from "../types/Series";
-import { handleError, handleSuccess } from "../utils/notifier";
+import { handleSuccess } from "../utils/notifier";
 import { formatTimeAgo } from "../utils/time";
 
 interface TableOfContentsItem {
@@ -45,33 +44,35 @@ const PostDetailPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { postId } = useParams<{ postId: string }>();
   const postIdNumber = postId ? parseInt(postId, 10) : null;
-  const [post, setPost] = useState<PostDetailResponse | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showScrollBottom, setShowScrollBottom] = useState(false);
   const [toc, setToc] = useState<TableOfContentsItem[]>([]);
-  const [seriesDetail, setSeriesDetail] = useState<SeriesDetailResponse | null>(
-    null,
-  );
   const mainContentRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  // 최초 조회
-  useEffect(() => {
-    if (postIdNumber === null) return;
+  // 게시글 조회 (postId가 바뀌면 로딩 상태로 되돌아감)
+  const { data: post } = useQuery({
+    queryKey: ["post", postIdNumber],
+    queryFn: () => getPost(postIdNumber!),
+    enabled: postIdNumber !== null,
+  });
 
-    // 게시글 조회
-    const fetchPost = async () => {
-      try {
-        const data = await getPost(postIdNumber);
+  // 시리즈 아이디 있을 경우 시리즈 상세 조회
+  const { data: seriesDetail } = useQuery({
+    queryKey: ["series", post?.seriesId],
+    queryFn: () => getSeriesWithPosts(post!.seriesId!),
+    enabled: !!post?.seriesId,
+  });
 
-        setPost(data);
-      } catch (error) {
-        handleError(error);
-      }
-    };
-
-    fetchPost();
-  }, [postIdNumber]);
+  const deleteMutation = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      handleSuccess("게시글이 성공적으로 삭제되었습니다.");
+      navigate("/posts");
+    },
+  });
 
   // 게시글 조회 완료 후
   useEffect(() => {
@@ -105,19 +106,6 @@ const PostDetailPage: React.FC = () => {
 
     setToc(tocItems);
 
-    // 시리즈 아이디 있을 경우 조회
-    if (post?.seriesId) {
-      const fetchSeriesDetail = async () => {
-        try {
-          const data = await getSeriesWithPosts(post.seriesId);
-          setSeriesDetail(data);
-        } catch (error) {
-          handleError(error);
-        }
-      };
-      fetchSeriesDetail();
-    }
-
     // 스크롤 이벤트
     const handleScroll = () => {
       const currentScrollPost = window.scrollY;
@@ -135,9 +123,6 @@ const PostDetailPage: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [post]);
-
-  // 시리즈 조회 훅
-  // useEffect(() => {}, [seriesDetail]);
 
   const handleGoback = () => {
     navigate(-1);
@@ -165,18 +150,11 @@ const PostDetailPage: React.FC = () => {
     }
   };
 
-  const handleDelete = async (e: FormEvent) => {
+  const handleDelete = (e: FormEvent) => {
     e.preventDefault();
 
     if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-      try {
-        await deletePost(postIdNumber!);
-
-        handleSuccess("게시글이 성공적으로 삭제되었습니다.");
-        navigate("/posts");
-      } catch (error) {
-        handleError(error);
-      }
+      deleteMutation.mutate(postIdNumber!);
     }
   };
 

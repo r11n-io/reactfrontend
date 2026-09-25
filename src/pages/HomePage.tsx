@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../api/PostApi";
 import { getTags } from "../api/TagApi";
 import CategoryCard from "../components/ui/CategoryCard";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import PostCard from "../components/ui/PostCard";
 import TagCard from "../components/ui/TagCard";
-import type { PostListResponse } from "../types/Post";
-import type { TagResponse } from "../types/Tag";
 
 /**
  * 홈페이지 컴포넌트
@@ -14,28 +12,19 @@ import type { TagResponse } from "../types/Tag";
  * @returns 홈페이지 컴포넌트 JSX
  */
 const HomePage: React.FC = () => {
-  const [latestPosts, setLatestPosts] = useState<
-    PostListResponse[] | undefined
-  >(undefined);
-  const [allTags, setAllTags] = useState<TagResponse[] | undefined>(undefined);
+  const { data: latestPosts } = useQuery({
+    queryKey: ["posts", "latest"],
+    queryFn: async () => {
+      const posts = await getPosts();
 
-  useEffect(() => {
-    // 최신 게시물 조회
-    const fetchLatestPosts = async () => {
-      const post = await getPosts();
+      return posts.slice(0, 4);
+    },
+  });
 
-      setLatestPosts(post.slice(0, 4));
-    };
-    fetchLatestPosts();
-
-    // 게시글 태그 목록 조회
-    const fetchAllTags = async () => {
-      const tags = await getTags();
-
-      setAllTags(tags);
-    };
-    fetchAllTags();
-  }, []);
+  const { data: allTags } = useQuery({
+    queryKey: ["tags"],
+    queryFn: getTags,
+  });
 
   // 화면
   return (
