@@ -4,6 +4,7 @@
  * @author R11n
  */
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
+import { notifySessionExpired } from "../services/AuthEventService";
 import type { ProblemDetail, StandardizeError } from "../types/ProblemDetail";
 import { refreshAccessToken } from "./AuthApi";
 
@@ -76,7 +77,7 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        notifySessionExpired();
 
         return Promise.reject(refreshError);
       }
