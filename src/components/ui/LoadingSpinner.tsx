@@ -2,7 +2,7 @@ import React from "react";
 
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg";
-  minHeight?: string | "full";
+  minHeight?: string;
   className?: string;
 }
 

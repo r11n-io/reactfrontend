@@ -61,16 +61,16 @@ const PostDetailPage: React.FC = () => {
   // 시리즈 아이디 있을 경우 시리즈 상세 조회
   const { data: seriesDetail } = useQuery({
     queryKey: ["series", post?.seriesId],
-    queryFn: () => getSeriesWithPosts(post!.seriesId!),
+    queryFn: () => getSeriesWithPosts(post!.seriesId),
     enabled: !!post?.seriesId,
   });
 
   const deleteMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      void queryClient.invalidateQueries({ queryKey: ["posts"] });
       handleSuccess("게시글이 성공적으로 삭제되었습니다.");
-      navigate("/posts");
+      void navigate("/posts");
     },
   });
 
@@ -125,7 +125,7 @@ const PostDetailPage: React.FC = () => {
   }, [post]);
 
   const handleGoback = () => {
-    navigate(-1);
+    void navigate(-1);
   };
 
   const scrollToTop = () => {
@@ -146,7 +146,7 @@ const PostDetailPage: React.FC = () => {
     e.preventDefault();
 
     if (window.confirm("이 게시글을 수정하시겠습니까?")) {
-      navigate(`/posts/write/${postIdNumber}`);
+      void navigate(`/posts/write/${postIdNumber}`);
     }
   };
 
@@ -267,7 +267,7 @@ const PostDetailPage: React.FC = () => {
                                 border: "none",
                               }}
                             >
-                              {String(children).replace(/\n$/, "")}
+                              {String(children as string).replace(/\n$/, "")}
                             </SyntaxHighlighter>
                           ) : (
                             <code

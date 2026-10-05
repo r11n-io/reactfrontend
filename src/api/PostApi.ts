@@ -19,7 +19,7 @@ export const createPost = async (
   postData: PostCreateRequest,
 ): Promise<PostResponse> => {
   try {
-    const response = await apiClient.post("/posts", postData);
+    const response = await apiClient.post<PostResponse>("/posts", postData);
 
     return response.data;
   } catch (error) {
@@ -103,7 +103,7 @@ export const updatePost = async (
   postId: number,
 ): Promise<PostResponse> => {
   try {
-    const response = await apiClient.put(`/posts/${postId}`, postData);
+    const response = await apiClient.put<PostResponse>(`/posts/${postId}`, postData);
 
     return response.data;
   } catch (error) {

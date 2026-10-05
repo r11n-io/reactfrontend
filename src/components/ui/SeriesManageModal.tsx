@@ -57,7 +57,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    fetchAllSeries();
+    void fetchAllSeries();
   }, []);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -65,6 +65,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
 
     if (!title.trim()) {
       handleError(new Error("시리즈 제목은 필수입니다."));
+      return;
     }
 
     const newSeries = {
@@ -78,7 +79,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
       handleSuccess(`시리즈 등록완료: [${data.seriesId}]`, () => {
         setTitle("");
         setDescription("");
-        fetchAllSeries();
+        void fetchAllSeries();
       });
     } catch (err) {
       handleError(err);
@@ -89,7 +90,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
     try {
       await deleteSeries(seriesId);
       handleSuccess(`시리즈 삭제완료: [${seriesId}]`, () => {
-        fetchAllSeries();
+        void fetchAllSeries();
       });
     } catch (err) {
       handleError(err);
@@ -160,7 +161,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
                 size="xs"
                 type="submit"
                 className="!bg-accent hover:!bg-accent-hover !text-on-accent border-none"
-                onClick={handleSubmit}
+                onClick={(e) => void handleSubmit(e)}
               >
                 신규 등록
               </Button>
@@ -192,7 +193,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
                           color="red"
                           size="xs"
                           className="opacity-60 transition-opacity hover:opacity-100"
-                          onClick={() => handleDelete(series.seriesId)}
+                          onClick={() => void handleDelete(series.seriesId)}
                         >
                           삭제
                         </Button>

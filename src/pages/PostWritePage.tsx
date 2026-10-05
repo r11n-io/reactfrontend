@@ -161,14 +161,16 @@ const PostWritePage: React.FC = () => {
         : createPost(savePost);
     },
     onSuccess: (savedPost) => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      void queryClient.invalidateQueries({ queryKey: ["posts"] });
 
       if (isEditMode) {
-        queryClient.invalidateQueries({ queryKey: ["post", Number(postId)] });
+        void queryClient.invalidateQueries({
+          queryKey: ["post", Number(postId)],
+        });
       }
 
       handleSuccess(`게시글 작성완료 [${savedPost.postId}]`, () =>
-        navigate("/posts"),
+        void navigate("/posts"),
       );
     },
     onError: handleError,
@@ -185,7 +187,7 @@ const PostWritePage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate("/posts");
+    void navigate("/posts");
   };
 
   if (isEditMode && isLoadingPost) {

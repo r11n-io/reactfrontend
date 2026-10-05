@@ -39,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const handleLogout = () => {
     logout();
 
-    handleSuccess("로그아웃되었습니다.", () => navigate("/login"));
+    handleSuccess("로그아웃되었습니다.", () => void navigate("/login"));
   };
 
   return (

@@ -26,7 +26,7 @@ const SearchInput: React.FC = () => {
       newSearchParams.set("keyword", keyword);
     }
 
-    navigate(`/posts?${newSearchParams.toString()}`);
+    void navigate(`/posts?${newSearchParams.toString()}`);
     setInputValue("");
 
     if (inputRef.current) {
