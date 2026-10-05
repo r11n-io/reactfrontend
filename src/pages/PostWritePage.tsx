@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Editor } from "codemirror";
 import type { Options } from "easymde";
 import "easymde/dist/easymde.min.css";
 import {
@@ -9,14 +10,21 @@ import {
   TextInput,
   ToggleSwitch,
 } from "flowbite-react";
-import React, { useEffect, useMemo, useState, type FormEvent } from "react";
-import { HiOutlineCheck } from "react-icons/hi";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
+import { HiOutlineCheck, HiOutlineRefresh } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleMdeEditor from "react-simplemde-editor";
 import { uploadImage } from "../api/ImageApi";
 import { createPost, getPost, updatePost } from "../api/PostApi";
 import { getAllSeries } from "../api/SeriesApi";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import MarkdownContent from "../components/ui/MarkdownContent";
 import { handleError, handleSuccess } from "../utils/notifier";
 
 const customInputTheme = {
@@ -59,6 +67,10 @@ const PostWritePage: React.FC = () => {
   const [isPrivate, setIsPrivate] = useState(false);
   const [seriesId, setSeriesId] = useState<number | null>(null);
   const [seriesOrder, setSeriesOrder] = useState<number | null>(null);
+  // 미리보기는 버튼을 눌렀을 때만 갱신 (긴 글 입력 시 렌더링 부하 방지)
+  const [previewContent, setPreviewContent] = useState("");
+  const [codemirror, setCodemirror] = useState<Editor | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -80,6 +92,7 @@ const PostWritePage: React.FC = () => {
 
     setTitle(existingPost.title);
     setContent(existingPost.content);
+    setPreviewContent(existingPost.content);
     setCategory(existingPost.category);
     setTags(existingPost.tags.join(", "));
     setIsPrivate(existingPost.isPrivate);
@@ -87,12 +100,33 @@ const PostWritePage: React.FC = () => {
     setSeriesOrder(existingPost.seriesOrder);
   }, [existingPost]);
 
+  // 에디터 스크롤 비율에 맞춰 미리보기 스크롤 동기화
+  useEffect(() => {
+    if (!codemirror) return;
+
+    const handleScroll = () => {
+      const preview = previewRef.current;
+      if (!preview) return;
+
+      const { top, height, clientHeight } = codemirror.getScrollInfo();
+      const ratio = height > clientHeight ? top / (height - clientHeight) : 0;
+
+      preview.scrollTop = ratio * (preview.scrollHeight - preview.clientHeight);
+    };
+
+    codemirror.on("scroll", handleScroll);
+
+    return () => {
+      codemirror.off("scroll", handleScroll);
+    };
+  }, [codemirror]);
+
   // 에디터 옵션
   const mdeOptions: Options = useMemo(() => {
     return {
       spellChecker: false,
       status: false,
-      minHeight: "180px",
+      maxHeight: "65vh",
       toolbar: [
         "heading",
         "bold",
@@ -104,16 +138,16 @@ const PostWritePage: React.FC = () => {
         "unordered-list",
         "ordered-list",
         "quote",
-        "|",
-        "preview",
-        "side-by-side",
-        "fullscreen",
       ],
+      // 미리보기는 별도 영역에서 제공하므로 내장 미리보기/전체화면 단축키 비활성화
+      shortcuts: {
+        togglePreview: null,
+        toggleSideBySide: null,
+        toggleFullScreen: null,
+      },
       readOnly: false,
       placeholder: "여기에 내용을 작성하세요...",
       autofocus: true,
-      sideBySideFullscreen: false,
-      syncSideBySidePreviewScroll: true,
       uploadImage: true,
       imageAccept: "image/*",
       imageUploadText: "이미지 업로드 중...",
@@ -182,6 +216,10 @@ const PostWritePage: React.FC = () => {
     submitMutation.mutate();
   };
 
+  const handleSyncPreview = () => {
+    setPreviewContent(content);
+  };
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -195,7 +233,7 @@ const PostWritePage: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="mx-auto max-w-[2000px] px-4 py-10">
       <header className="border-secondary-text/10 mb-6 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-end">
         <h1 className="text-primary-text text-4xl font-black tracking-tighter">
           새 글 작성
@@ -361,22 +399,47 @@ const PostWritePage: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <div className="mb-2 block">
-            <div className="mb-3">
-              <Label
-                htmlFor="content"
-                className="text-secondary-text text-sm font-medium"
-              >
-                본문 내용 (Markdown)
-              </Label>
+        <div className="mb-2 grid grid-cols-2 gap-x-6 gap-y-3">
+          <div className="flex items-center">
+            <Label
+              htmlFor="content"
+              className="text-secondary-text text-sm font-medium"
+            >
+              본문 내용 (Markdown)
+            </Label>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-secondary-text text-sm font-medium">
+              미리보기
+              {content !== previewContent && (
+                <span className="text-accent ml-2 text-xs">변경사항 있음</span>
+              )}
+            </span>
+            <Button
+              size="xs"
+              onClick={handleSyncPreview}
+              className="!bg-accent hover:!bg-accent-hover !text-on-accent border-none"
+            >
+              <HiOutlineRefresh className="mr-1 h-4 w-4" />
+              미리보기 갱신
+            </Button>
+          </div>
+
+          <SimpleMdeEditor
+            value={content}
+            onChange={handleContentChange}
+            options={mdeOptions}
+            getCodemirrorInstance={setCodemirror}
+            className="markdown-editor-simplemde min-w-0"
+          />
+          {/* 에디터 높이에 맞춰 늘어나고, 내용은 내부 스크롤 */}
+          <div className="border-secondary-text/10 bg-main/50 relative min-w-0 rounded-lg border">
+            <div
+              ref={previewRef}
+              className="custom-scrollbar absolute inset-0 overflow-y-auto px-6 py-4"
+            >
+              <MarkdownContent content={previewContent} linkHeadings={false} />
             </div>
-            <SimpleMdeEditor
-              value={content}
-              onChange={handleContentChange}
-              options={mdeOptions}
-              className="markdown-editor-simplemde"
-            />
           </div>
         </div>
       </Card>

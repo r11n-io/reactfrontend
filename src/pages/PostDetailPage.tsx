@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Badge, Button, Card } from "flowbite-react";
-import "katex/dist/katex.min.css";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   HiArrowDown,
@@ -11,18 +10,11 @@ import {
   HiOutlinePencil,
   HiOutlineTrash,
 } from "react-icons/hi";
-import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeKatex from "rehype-katex";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
 import { deletePost, getPost } from "../api/PostApi";
 import { getSeriesWithPosts } from "../api/SeriesApi";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import MarkdownContent from "../components/ui/MarkdownContent";
 import SeriesNavigator from "../components/ui/SeriesNavigator";
 import { useAuth } from "../hooks/useAuth";
 import { handleSuccess } from "../utils/notifier";
@@ -220,67 +212,7 @@ const PostDetailPage: React.FC = () => {
                   </header>
 
                   {/* 마크다운 콘텐츠 영역 */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "minmax(0, 1fr)",
-                      width: "100%",
-                      overflowX: "hidden",
-                    }}
-                    className="prose dark:prose-invert prose-lg w-full max-w-full min-w-0 overflow-x-hidden"
-                  >
-                    <ReactMarkdown
-                      children={post.content}
-                      remarkPlugins={[remarkGfm, remarkMath]}
-                      rehypePlugins={[
-                        rehypeSlug,
-                        [rehypeAutolinkHeadings, { behavior: "wrap" }],
-                        [rehypeKatex],
-                      ]}
-                      components={{
-                        code({ className, children, ...props }) {
-                          const match = /language-(\w+)/.exec(className || "");
-                          const isCodeBlock = !!match;
-
-                          return isCodeBlock ? (
-                            <SyntaxHighlighter
-                              language={match[1]}
-                              style={vscDarkPlus}
-                              PreTag="div"
-                              codeTagProps={{
-                                style: {
-                                  padding: "0",
-                                  display: "inline",
-                                },
-                              }}
-                              customStyle={{
-                                fontSize: "0.9rem",
-                                lineHeight: "1.6",
-                                borderRadius: "0.5rem",
-                                margin: "1rem 0",
-                                padding: "1rem",
-                                backgroundColor: "#1e1e1e",
-                                maxWidth: "100%",
-                                width: "100%",
-                                overflowX: "auto",
-                                display: "block",
-                                border: "none",
-                              }}
-                            >
-                              {String(children as string).replace(/\n$/, "")}
-                            </SyntaxHighlighter>
-                          ) : (
-                            <code
-                              className="rounded bg-gray-200 px-1.5 py-0.5 text-sm font-semibold text-red-500 dark:bg-gray-700 dark:text-red-400"
-                              {...props}
-                            >
-                              {children}
-                            </code>
-                          );
-                        },
-                      }}
-                    />
-                  </div>
+                  <MarkdownContent content={post.content} />
 
                   <footer className="mt-4 border-t border-gray-300 p-4 dark:border-gray-700">
                     <Button
