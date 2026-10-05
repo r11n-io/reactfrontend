@@ -79,7 +79,11 @@ apiClient.interceptors.response.use(
         localStorage.removeItem("accessToken");
         notifySessionExpired();
 
-        return Promise.reject(refreshError);
+        return Promise.reject(
+          refreshError instanceof Error
+            ? refreshError
+            : new Error(String(refreshError)),
+        );
       }
     } else if (error.response) {
       const problemDetail: ProblemDetail = error.response.data as ProblemDetail;

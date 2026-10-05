@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     registerSessionExpiredHandler(() => {
       logout();
       showToast("세션이 만료되었습니다. 다시 로그인해 주세요.", "error");
-      navigate("/login");
+      void navigate("/login");
     });
   }, [logout, navigate]);
 

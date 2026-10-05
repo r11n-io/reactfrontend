@@ -36,8 +36,10 @@ describe("apiClient 401 인터셉터", () => {
       return callCount === 1 ? [401] : [200, { postId: 1 }];
     });
 
-    vi.mocked(refreshAccessToken).mockImplementation(async () => {
+    vi.mocked(refreshAccessToken).mockImplementation(() => {
       localStorage.setItem("accessToken", "new-token");
+
+      return Promise.resolve();
     });
 
     const response = await apiClient.get("/posts/1");

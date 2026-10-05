@@ -15,7 +15,7 @@ export const createSeries = async (
   seriesData: SeriesCreateRequest,
 ): Promise<SeriesCreateResponse> => {
   try {
-    const response = await apiClient.post("/series", seriesData);
+    const response = await apiClient.post<SeriesCreateResponse>("/series", seriesData);
 
     return response.data;
   } catch (error) {

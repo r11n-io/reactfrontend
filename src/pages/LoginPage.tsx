@@ -45,7 +45,7 @@ const LoginPage: React.FC = () => {
 
       contextLogin(data);
 
-      handleSuccess("로그인되었습니다.", () => navigate("/"));
+      handleSuccess("로그인되었습니다.", () => void navigate("/"));
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
           <p className="text-secondary-text mt-2 text-sm font-medium">Login</p>
         </div>
 
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4" onSubmit={(e) => void handleSubmit(e)}>
           <div>
             <div className="mb-2 block">
               <Label
