@@ -65,6 +65,7 @@ const SeriesManageModal: React.FC<SeriesManageModalProps> = ({ onClose }) => {
 
     if (!title.trim()) {
       handleError(new Error("시리즈 제목은 필수입니다."));
+      return;
     }
 
     const newSeries = {
